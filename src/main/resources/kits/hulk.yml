@@ -1,12 +1,14 @@
 inventory-item:
   slot: 1
-  type: "BRICK"
-  name: "&6&lConstructor"
+  type: "INK_SACK"
+  data: 2
+  name: "&a&lHulk"
   lore:
     - " "
     - " &eVentajas:"
     - " "
-    - " &f16x Ladrillos"
+    - " &bVelocidad 1 &8(infinita)"
+    - " &fPantalones de cuero"
     - " "
     - " &7Coste: &6250 LCOINS"
     - ""
@@ -17,7 +19,7 @@ leggings:
   type: "LEATHER_LEGGINGS"
 
 effects:
-  - "HASTE" # Effect,Duration,Level -> Leave duration empty for infinite
+  - "SPEED,10000000,3" # Effect,Duration,Level -> Leave duration empty for infinite
 
 items:
   - "Item:BRICK,Amount:16"

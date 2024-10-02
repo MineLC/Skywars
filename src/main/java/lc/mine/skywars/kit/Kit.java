@@ -13,6 +13,7 @@ public record Kit(
     ItemStack[] items,
 
     PotionEffect[] effects,
+    int inventorySlot,
     org.bukkit.inventory.ItemStack inventoryItem
 ) {
 }

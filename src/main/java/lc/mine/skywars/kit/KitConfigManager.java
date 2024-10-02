@@ -54,6 +54,7 @@ public final class KitConfigManager {
                 armorPiece("boots", kitConfig, itemDeserializer),
                 getItems(kitConfig.getStringList("items"), kitCSVDeserializer),
                 getEffects(kitConfig.getStringList("effects"), fileName),
+                inventoryItemSection.getInt("slot"),
                 inventoryItem
             );
         }
