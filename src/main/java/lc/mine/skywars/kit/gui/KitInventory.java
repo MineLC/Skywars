@@ -18,10 +18,12 @@ public final class KitInventory implements ClickableInventory {
     @Override
     public void onClick(InventoryClickEvent event) {
         final int slot = event.getSlot();
-        if (slot > kits.length) {
-            return;
+        for (final Kit kit : kits) {
+            if (kit.inventorySlot() == slot) {
+                KitAdder.add((Player)event.getWhoClicked(), kit);
+                event.setCancelled(true);
+                return;
+            }
         }
-        KitAdder.add((Player)event.getWhoClicked(), kits[slot]);
-        event.setCancelled(true);
     }
 }

@@ -69,7 +69,7 @@ public final class SkywarsCommand implements TabExecutor {
             case "kits":
                 ((Player)sender).openInventory(KitInventoryCreator.create(manager.kits));
                 break;
-            
+
             default:
                 sender.sendMessage(format());
                 break;

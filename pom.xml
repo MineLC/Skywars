@@ -3,12 +3,19 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>site.ichocomilk</groupId>
+  <groupId>lc.mine</groupId>
   <artifactId>skywars</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>skywars</name>
-  <url>http://ichocomilk.site</url>
+  <name>Skywars</name>
+
+  <contributors>
+    <contributor>
+      <name>iChocoMilk</name>
+      <email>ichocodev@gmail.com</email>
+      <url>http://ichocomilk.site</url>
+    </contributor>
+  </contributors>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +28,14 @@
       <id>songoda</id>
       <url>https://repo.songoda.com/repository/public/</url>
     </repository>
+    <repository>
+      <id>swm-repo</id>
+      <url>https://repo.glaremasters.me/repository/concuncan/</url>
+    </repository>
+		<repository>
+		  <id>jitpack.io</id>
+		  <url>https://jitpack.io</url>
+		</repository>
   </repositories>
 
   <dependencies>
@@ -28,6 +43,18 @@
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
       <version>1.8.8</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.ichocomilk</groupId>
+      <artifactId>LightSidebar</artifactId>
+      <version>0.0.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.grinderwolf</groupId>
+      <artifactId>slimeworldmanager-api</artifactId>
+      <version>2.2.1</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

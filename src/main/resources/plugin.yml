@@ -1,6 +1,6 @@
 main: lc.mine.skywars.SkywarsPlugin
 name: Skywars
-version: 1.0.0
+version: 1.0-SNAPSHOT
 
 description: Optimized skywars 1.8
 
@@ -9,4 +9,4 @@ website: ichocomilk.site
 
 commands:
   skywars:
-    description: "Change kb"
+    description: "Skywars command"

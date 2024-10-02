@@ -1,9 +1,11 @@
 package lc.mine.skywars.chestrefill.listener;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.Event.Result;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -28,5 +30,13 @@ public final class ChestInventoryListener implements Listener {
         }
         event.getPlayer().openInventory(ChestInventoryCreator.createInventory());
         event.setUseInteractedBlock(Result.DENY);
+    }
+
+    @EventHandler
+    public void breaka(final BlockBreakEvent event) {
+        if (event.getBlock().getType() == Material.BEACON) {
+            final Location a = event.getBlock().getLocation();
+            System.out.println(a.getBlockX() + "," + a.getBlockY() + "," + a.getBlockZ());
+        }
     }
 }
