@@ -9,9 +9,8 @@ public class KitInventoryCreator {
 
     public static Inventory create(final Kit[] kits) {
         final Inventory inventory = Bukkit.createInventory(new KitInventory(kits), 54, "Kits");
-        int i = 0;
         for (final Kit kit : kits) {
-            inventory.setItem(i++, kit.inventoryItem());
+            inventory.setItem(kit.inventorySlot(), kit.inventoryItem());
         }
         return inventory;
     }
