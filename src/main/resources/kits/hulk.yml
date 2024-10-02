@@ -1,0 +1,23 @@
+inventory-item:
+  slot: 1
+  type: "BRICK"
+  name: "&6&lConstructor"
+  lore:
+    - " "
+    - " &eVentajas:"
+    - " "
+    - " &f16x Ladrillos"
+    - " "
+    - " &7Coste: &6250 LCOINS"
+    - ""
+
+cost: 250
+
+leggings:
+  type: "LEATHER_LEGGINGS"
+
+effects:
+  - "HASTE" # Effect,Duration,Level -> Leave duration empty for infinite
+
+items:
+  - "Item:BRICK,Amount:16"

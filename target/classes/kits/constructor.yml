@@ -1,0 +1,17 @@
+inventory-item:
+  slot: 0
+  type: "BRICK"
+  name: "&6&lConstructor"
+  lore:
+    - " "
+    - " &eVentajas:"
+    - " "
+    - " &f16x Ladrillos"
+    - " "
+    - " &7Coste: &6250 LCOINS"
+    - ""
+
+cost: 250
+
+items:
+  - "Item:BRICK,Amount:16"
