@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -47,7 +46,8 @@ public final class ChestInventoryListener implements Listener {
         ChestInventoryCreator.setItems(((Chest)event.getClickedBlock().getState()).getBlockInventory());
         chestsInCooldown.add(key);
     }
-
+    /*
+     * Only for testing xd 
     @EventHandler
     public void breaka(final BlockBreakEvent event) {
         if (event.getBlock().getType() == Material.BEACON) {
@@ -55,4 +55,5 @@ public final class ChestInventoryListener implements Listener {
             System.out.println(a.getBlockX() + "," + a.getBlockY() + "," + a.getBlockZ());
         }
     }
+     */
 }

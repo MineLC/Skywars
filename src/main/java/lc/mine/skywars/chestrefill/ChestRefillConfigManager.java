@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import lc.mine.skywars.chestrefill.gui.ChestPreviewItemsGui;
 import lc.mine.skywars.chestrefill.gui.ChestRefillGui;
+import lc.mine.skywars.config.Config;
 import lc.mine.skywars.config.ConfigSection;
 import lc.mine.skywars.config.csv.deserializer.ChestRefillCSVDeserializer;
 import lc.mine.skywars.config.item.ItemDeserializer;
@@ -27,12 +28,13 @@ public class ChestRefillConfigManager {
         this.logger = logger;
     }
 
-    public Inventory load(final ConfigSection config) {
+    public void load(final ConfigSection config, final Config.ChestRefill configToLoad) {
         final ConfigSection modes = config.getSection("modes");
         if (modes == null) {
             logger.info("Can't found chest modes. Check your chest.yml");
-            return null;
+            return;
         }
+
         final ItemDeserializer itemDeserializer = new ItemDeserializer(logger, "chest.yml");
 
         final ItemStack backItem = itemDeserializer.buildSafeItem(config.getSection("back-item"), "back-item");
@@ -55,7 +57,7 @@ public class ChestRefillConfigManager {
  
         final Set<Entry<String, Object>> chestModes = modes.values().entrySet();
         final List<ChestMode> listChestModes = new ArrayList<>();
-
+        
         for (final Entry<String, Object> mode : chestModes) {
             if (!(mode.getValue() instanceof Map map)) {
                 continue;
@@ -85,9 +87,11 @@ public class ChestRefillConfigManager {
             listChestModes.add(new ChestMode(chestItems, itemsPerChest, inventorySlot, modeInventory, modeName));
         }
 
-        gui.setModes(listChestModes.toArray(new ChestMode[0]));
+        final ChestMode[] modesArray = listChestModes.toArray(new ChestMode[0]);
+        gui.setModes(modesArray);
 
-        return inventory;
+        configToLoad.inventory = inventory;
+        configToLoad.modes = modesArray;
     }
 
     private ChestItem[] getItems(final ConfigSection section, final String mode) {

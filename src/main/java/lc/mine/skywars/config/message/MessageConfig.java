@@ -21,6 +21,7 @@ public final class MessageConfig {
             }
             messages.put(entry.getKey(), MessageColor.toString(entry.getValue()));
         }
+        Messages.setInstance(new Messages(messages));
     }
 
     @SuppressWarnings("unchecked")

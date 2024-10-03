@@ -3,7 +3,6 @@ package lc.mine.skywars.game.tasks;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
 import io.github.ichocomilk.lightsidebar.nms.v1_8R3.Sidebar1_8R3;
@@ -11,6 +10,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.message.Messages;
 import lc.mine.skywars.map.GameMap;
+import lc.mine.skywars.utils.TimeUtil;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.WorldSettings.EnumGamemode;
@@ -51,15 +51,14 @@ public class InGameTask implements Runnable {
                 amountPlayerLiving++;
             }
         }
-
+        final String refill = TimeUtil.getMinutesAndSeconds(nextRefill);
         for (final EntityPlayer player : players) {
             final Player bukkitPlayer = player.getBukkitEntity();
             sidebar.setLines(sidebar.createLines(new String[]{
                 "",
-                "§fRefill: §e" + nextRefill,
+                "§fRefill: §e" + refill,
                 "",
-                "§fAsesinatos: §c" + bukkitPlayer.getStatistic(Statistic.PLAYER_KILLS),
-                "",
+                "§fAsesinatos: §c" + SkywarsPlugin.getInstance().getManager().getDatabase().getCached(player.getUniqueID()).kills,
                 "§fJugadores: §a" + amountPlayerLiving,
                 "",
                 "§fMapa: " + map.displayName() ,

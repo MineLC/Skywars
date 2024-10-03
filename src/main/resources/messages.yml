@@ -20,14 +20,14 @@ game-started:
   - ""
   - " &a&lJUEGO INICIADO"
   - ""
-  - " &7Se el último en pie"
+  - " &fTipos de cofres: &e%chest%"
   - ""
 
 win:
   - ""
   - " &6&lFIN DE LA PARTIDA"
   - ""
-  - " &fEl jugador &a%player% &aha &a&lGANADO"
+  - " &fEl jugador &a%winner% &aha &a&lGANADO"
   - ""
 
 death:
@@ -37,3 +37,6 @@ death:
   - " &fPero puedes espectear la partida"
   - " &fSin ningún problema"
   - ""
+
+selectChestMode: "&aHas selecionado el modo &e%mode%"
+selected-kit: "&aHas selecionado el kit &e%kit%"
