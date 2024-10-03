@@ -2,7 +2,6 @@ package lc.mine.skywars.chestrefill.creator;
 
 import java.util.SplittableRandom;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
 import lc.mine.skywars.chestrefill.ChestItem;
@@ -13,8 +12,7 @@ public final class ChestInventoryCreator {
     private static final SplittableRandom RANDOM = new SplittableRandom();
     public static ChestMode currentMode;
 
-    public static Inventory createInventory() {
-        final Inventory inventory = Bukkit.createInventory(null, 27, currentMode.getName());
+    public static void setItems(Inventory inventory) {
         final ChestItem[] items = currentMode.getItems();
         final int length = items.length - 1;
         int remainItems = currentMode.getItemsPerChest();
@@ -26,7 +24,5 @@ public final class ChestInventoryCreator {
                 remainItems--;
             }
         } while (remainItems > 0);
-
-        return inventory;
     }
 }

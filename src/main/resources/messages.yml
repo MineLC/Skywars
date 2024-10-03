@@ -1,1 +1,39 @@
 game-full: "&cEl juego está lleno, vuelve a entrar luego"
+
+join:
+  - ""
+  - "&6&l SKYWARS"
+  - ""
+  - " &fTu misión es ser el último vivo"
+  - " &fSe necesitan 2 jugadores para empezar"
+  - ""
+
+chest-refill:
+  - ""
+  - " &a&lCOFRES RESTABLECIDOS"
+  - ""
+  - " &eAhora los cofres tendrán"
+  - " &eun nuevo loot"
+  - ""
+
+game-started:
+  - ""
+  - " &a&lJUEGO INICIADO"
+  - ""
+  - " &7Se el último en pie"
+  - ""
+
+win:
+  - ""
+  - " &6&lFIN DE LA PARTIDA"
+  - ""
+  - " &fEl jugador &a%player% &aha &a&lGANADO"
+  - ""
+
+death:
+  - ""
+  - " &c&lHAS MUERTO"
+  - ""
+  - " &fPero puedes espectear la partida"
+  - " &fSin ningún problema"
+  - ""
