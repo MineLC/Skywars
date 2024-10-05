@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import lc.mine.core.CorePlugin;
 import lc.mine.skywars.chestrefill.listener.ChestInventoryListener;
 import lc.mine.skywars.command.SkywarsCommand;
 import lc.mine.skywars.config.ConfigManager;
@@ -23,15 +24,24 @@ public class SkywarsPlugin extends JavaPlugin {
 
     private final ConfigManager manager = new ConfigManager(getLogger());
     private SlimePlugin slimePlugin;
+    private CorePlugin corePlugin;
 
     @Override
     public void onEnable() {
-        final Plugin plugin = Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
-        if (plugin == null) {
+        final Plugin slime = Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+        if (slime == null) {
             getLogger().warning("Plugin can't start because don't found slimeworldmanager");
             return;
         }
-        this.slimePlugin = (SlimePlugin)plugin;        
+        final Plugin core = Bukkit.getPluginManager().getPlugin("LCCore");
+        if (core == null) {
+            getLogger().warning("Plugin can't start because don't found LCCore");
+            return;
+        }
+
+        this.corePlugin = (CorePlugin)core;
+        this.slimePlugin = (SlimePlugin)slime;       
+
         instance = this;
 
         manager.load(slimePlugin, LoadOption.ALL);
@@ -58,6 +68,10 @@ public class SkywarsPlugin extends JavaPlugin {
 
     public ConfigManager getManager() {
         return manager;
+    }
+
+    public CorePlugin getCorePlugin() {
+        return corePlugin;
     }
 
     public static SkywarsPlugin getInstance() {

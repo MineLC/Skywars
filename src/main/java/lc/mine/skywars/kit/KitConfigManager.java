@@ -19,6 +19,7 @@ import lc.mine.skywars.config.Config;
 import lc.mine.skywars.config.ConfigSection;
 import lc.mine.skywars.config.csv.deserializer.KitCSVDeserializer;
 import lc.mine.skywars.config.item.ItemDeserializer;
+import lc.mine.skywars.config.message.MessageColor;
 import lc.mine.skywars.config.utils.FileUtils;
 import lc.mine.skywars.utils.IntegerUtil;
 
@@ -61,7 +62,10 @@ public final class KitConfigManager {
                 getItems(kitConfig.getStringList("items"), kitCSVDeserializer),
                 getEffects(kitConfig.getStringList("effects"), fileName),
                 inventoryItemSection.getInt("slot"),
-                inventoryItem
+                inventoryItem,
+                kitConfig.getString("permission"),
+                MessageColor.fastColor(kitConfig.getString("no-permission-message")),
+                kitConfig.getInt("cost")
             );
 
             kits[i++] = kit;

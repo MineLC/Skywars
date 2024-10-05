@@ -14,6 +14,10 @@ public record Kit(
 
     PotionEffect[] effects,
     int inventorySlot,
-    org.bukkit.inventory.ItemStack inventoryItem
+    org.bukkit.inventory.ItemStack inventoryItem,
+
+    String permission,
+    String noPermissionMessage,
+    int cost
 ) {
 }

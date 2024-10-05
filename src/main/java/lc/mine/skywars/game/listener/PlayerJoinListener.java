@@ -16,6 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.ichocomilk.lightsidebar.nms.v1_8R3.Sidebar1_8R3;
+import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.ConfigManager;
 import lc.mine.skywars.config.message.Messages;
 import lc.mine.skywars.game.GameState;
@@ -96,6 +97,7 @@ public class PlayerJoinListener implements Listener {
             sidebar.setLines(sidebar.createLines(new String[]{
                 "",
                 "§fJugadores: §a" + amountPlayers + '/' + map.spawns().length,
+                "§fLCoins: §e" + SkywarsPlugin.getInstance().getCorePlugin().getData().getCached(player.getUniqueID()).getLcoins(),
                 "",
                 "§fMapa: " + map.displayName() ,
                 "",

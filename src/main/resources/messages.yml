@@ -40,3 +40,4 @@ death:
 
 selectChestMode: "&aHas selecionado el modo &e%mode%"
 selected-kit: "&aHas selecionado el kit &e%kit%"
+no-money: "&4&lERROR: &cNo tienes suficiente dinero"

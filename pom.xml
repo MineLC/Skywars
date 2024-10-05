@@ -64,6 +64,13 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>lc.mine</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/dependencies/core.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
       <version>5.2.0</version>

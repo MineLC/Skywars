@@ -1,7 +1,9 @@
 package lc.mine.skywars.kit.gui;
 
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import lc.mine.core.database.PlayerData;
 import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.message.Messages;
 import lc.mine.skywars.kit.Kit;
@@ -18,13 +20,30 @@ public final class KitInventory implements ClickableInventory {
     @Override
     public void onClick(InventoryClickEvent event) {
         final int slot = event.getSlot();
+        final HumanEntity entity = event.getWhoClicked();
         for (final Kit kit : kits) {
-            if (kit.inventorySlot() == slot) {
-                SkywarsPlugin.getInstance().getManager().getDatabase().getCached(event.getWhoClicked().getUniqueId()).selectedKit = kit;
-                event.getWhoClicked().sendMessage(Messages.get("selected-kit").replace("%kit%", kit.name()));
-                event.setCancelled(true);
+            if (kit.inventorySlot() != slot) {
+                continue;
+            }
+            event.setCancelled(true);
+
+            if (kit.permission() != null && !entity.hasPermission(kit.permission())) {
+                entity.sendMessage(kit.noPermissionMessage());   
                 return;
             }
+
+            if (kit.cost() > 0) {
+                PlayerData data = SkywarsPlugin.getInstance().getCorePlugin().getData().getCached(entity.getUniqueId());    
+                if (data.getLcoins() < kit.cost()) {
+                    Messages.send(entity, "no-money");
+                    return;
+                }
+                data.setLcoins(data.getLcoins() - kit.cost());
+            }
+
+            SkywarsPlugin.getInstance().getManager().getDatabase().getCached(entity.getUniqueId()).selectedKit = kit;
+            entity.sendMessage(Messages.get("selected-kit").replace("%kit%", kit.name()));
+            return;
         }
     }
 }
