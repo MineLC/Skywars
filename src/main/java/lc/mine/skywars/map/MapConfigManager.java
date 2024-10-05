@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SplittableRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,9 +38,11 @@ public class MapConfigManager {
         if (mapFiles == null || mapFiles.length == 0) {
             return null;
         }
-        final File mapFile = mapFiles[0];
+        final File mapFile = mapFiles[new SplittableRandom().nextInt(mapFiles.length - 1)];
         final String mapName = mapFile.getName();
-
+        if (!mapName.endsWith(".yml")) {
+            return null;
+        }
         final ConfigSection config = FileUtils.getConfig(yaml, mapFile);
         final String worldName = config.getString("world");
         if (worldName == null) {
@@ -50,11 +53,10 @@ public class MapConfigManager {
         if (world == null) {
             return null;
         }
-
+        world.getWorldBorder().setSize(config.getInt("worldborder"));
         return new GameMap(
             loadSpawns(config.getStringList("spawns"), mapName),
             MessageColor.fastColor(config.getOrDefault("displayname", mapName)),
-            config.getInt("worldborder"),
             world);
     }
 

@@ -46,14 +46,4 @@ public final class ChestInventoryListener implements Listener {
         ChestInventoryCreator.setItems(((Chest)event.getClickedBlock().getState()).getBlockInventory());
         chestsInCooldown.add(key);
     }
-    /*
-     * Only for testing xd 
-    @EventHandler
-    public void breaka(final BlockBreakEvent event) {
-        if (event.getBlock().getType() == Material.BEACON) {
-            final Location a = event.getBlock().getLocation();
-            System.out.println(a.getBlockX() + "," + a.getBlockY() + "," + a.getBlockZ());
-        }
-    }
-     */
 }

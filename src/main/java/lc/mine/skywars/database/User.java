@@ -1,5 +1,6 @@
 package lc.mine.skywars.database;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public class User {
     public int kills = 0;
     public int deaths = 0;
 
-    public Set<String> kits;
+    public Set<String> kits = new HashSet<>();
 
     public int wins = 0;
 

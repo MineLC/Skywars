@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.HashSet;
 import java.util.UUID;
 
 import org.bson.Document;
@@ -19,6 +18,7 @@ import com.mongodb.client.model.Updates;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap.FastEntrySet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lc.mine.skywars.database.Database;
 import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.database.CompleteOperation;
@@ -73,8 +73,10 @@ final class MongoDBImpl implements Database {
         setIf(document, KILLS, user.kills, 0);
         setIf(document, DEATHS, user.deaths, 0);
         setIf(document, WINS, user.wins, 0);
-        setIf(document, KITS, user.kits, null);
-        setIf(document, SELECTED_KIT, user.kits, null);
+        setIf(document, KITS, user.selectedKit.name(), null);
+        if (!user.kits.isEmpty()) {
+            document.put(SELECTED_KIT, user.kits);    
+        }
         if (document.isEmpty()) {
             return null;
         }
@@ -88,8 +90,10 @@ final class MongoDBImpl implements Database {
         setIf(update, KILLS, user.kills, 0);
         setIf(update, DEATHS, user.deaths, 0);
         setIf(update, WINS, user.wins, 0);
-        setIf(update, KITS, user.kits, null);
-        setIf(update, SELECTED_KIT, user.kits, null);
+        setIf(update, KITS, user.selectedKit, null);
+        if (!user.kits.isEmpty()) {
+            update.add(Updates.set(SELECTED_KIT, user.kits));    
+        }
         if (update.isEmpty()) {
             return null;
         } 
@@ -128,7 +132,7 @@ final class MongoDBImpl implements Database {
 
             final List<String> kits = document.getList(KITS, String.class, null);
             if (kits != null) {
-                user.kits = new HashSet<>(kits);
+                user.kits = new ObjectOpenHashSet<>(kits);
             }
             user.selectedKit = SkywarsPlugin.getInstance().getManager().getConfig().kits.perName.get(document.getString(SELECTED_KIT));
 

@@ -19,16 +19,16 @@ public class KitAdder {
         }
 
         if (kit.helmet() != null) {
-            inventory.armor[3] = kit.helmet();
+            inventory.armor[3] = kit.helmet().cloneItemStack();
         }
         if (kit.chestplate() != null) {
-            inventory.armor[2] = kit.chestplate();
+            inventory.armor[2] = kit.chestplate().cloneItemStack();
         }
         if (kit.leggings() != null) {
-            inventory.armor[1] = kit.leggings();
+            inventory.armor[1] = kit.leggings().cloneItemStack();
         }
         if (kit.boots() != null) {
-            inventory.armor[0] = kit.boots();
+            inventory.armor[0] = kit.boots().cloneItemStack();
         }
 
         int i = 0;
@@ -46,7 +46,7 @@ public class KitAdder {
         final ItemStack[] kitItems = kit.items();
         final int kitItemsAmount = kitItems.length;
         for (int slot = 0; slot < kitItemsAmount; slot++) {
-            items[slot] = kitItems[slot];
+            items[slot] = kitItems[slot].cloneItemStack();
         }
     }
 }

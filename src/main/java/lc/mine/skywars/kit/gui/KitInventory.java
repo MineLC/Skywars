@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import lc.mine.core.database.PlayerData;
 import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.message.Messages;
+import lc.mine.skywars.database.User;
 import lc.mine.skywars.kit.Kit;
 import lc.mine.skywars.utils.ClickableInventory;
 
@@ -32,13 +33,18 @@ public final class KitInventory implements ClickableInventory {
                 return;
             }
 
-            if (kit.cost() > 0) {
-                PlayerData data = SkywarsPlugin.getInstance().getCorePlugin().getData().getCached(entity.getUniqueId());    
+            final User skywarsUser = SkywarsPlugin.getInstance().getManager().getDatabase().getCached(entity.getUniqueId());
+
+            if (kit.cost() > 0 && !skywarsUser.kits.contains(kit.name())) {
+                PlayerData data = SkywarsPlugin.getInstance().getCorePlugin().getData().getCached(entity.getUniqueId());                   
+
                 if (data.getLcoins() < kit.cost()) {
                     Messages.send(entity, "no-money");
                     return;
                 }
+
                 data.setLcoins(data.getLcoins() - kit.cost());
+                skywarsUser.kits.add(kit.name());
             }
 
             SkywarsPlugin.getInstance().getManager().getDatabase().getCached(entity.getUniqueId()).selectedKit = kit;

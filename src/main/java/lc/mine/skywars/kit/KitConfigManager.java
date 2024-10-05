@@ -53,6 +53,7 @@ public final class KitConfigManager {
 
             final ConfigSection inventoryItemSection = kitConfig.getSection("inventory-item");
             final ItemStack inventoryItem = itemDeserializer.buildSafeItem(inventoryItemSection, "inventory-item");
+            final String noPermissionMessage = kitConfig.getString("no-permission-message");
             final Kit kit = new Kit(
                 kitName,
                 armorPiece("helmet", kitConfig, itemDeserializer),
@@ -64,7 +65,7 @@ public final class KitConfigManager {
                 inventoryItemSection.getInt("slot"),
                 inventoryItem,
                 kitConfig.getString("permission"),
-                MessageColor.fastColor(kitConfig.getString("no-permission-message")),
+                noPermissionMessage == null ? null : MessageColor.fastColor(noPermissionMessage),
                 kitConfig.getInt("cost")
             );
 
