@@ -116,7 +116,6 @@ public class PlayerJoinListener implements Listener {
         item.setItemMeta(meta);
 
         inventory.setItem(0, item);
-
         
         item = new ItemStack(Material.BEACON);
         meta = item.getItemMeta();
@@ -124,5 +123,19 @@ public class PlayerJoinListener implements Listener {
         item.setItemMeta(meta);
 
         inventory.setItem(8, item);
+
+        item = new ItemStack(Material.EMERALD);
+        meta = item.getItemMeta();
+        meta.setDisplayName("§aTop Wins");
+        item.setItemMeta(meta);
+
+        inventory.setItem(7, item);
+
+        item = new ItemStack(Material.PAPER);
+        meta = item.getItemMeta();
+        meta.setDisplayName("§cTop Muertes");
+        item.setItemMeta(meta);
+
+        inventory.setItem(6, item);
     }
 }

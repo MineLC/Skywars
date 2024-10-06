@@ -41,7 +41,7 @@ public final class KitConfigManager {
 
         final Kit[] kits = new Kit[kitsFiles.length];
         final Map<String, Kit> perName = new Object2ObjectOpenHashMap<>();
-        final Inventory inventory = Bukkit.createInventory(new KitInventory(kits), 54);
+        final Inventory inventory = Bukkit.createInventory(new KitInventory(kits), 54, "Kits");
         int i = 0;
 
         for (final File kitFile : kitsFiles) {

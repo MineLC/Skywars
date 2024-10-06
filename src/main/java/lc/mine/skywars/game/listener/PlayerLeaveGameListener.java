@@ -16,9 +16,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.message.Messages;
 import lc.mine.skywars.database.Database;
+import lc.mine.skywars.database.User;
 import lc.mine.skywars.game.GameState;
 import lc.mine.skywars.map.GameMap;
 import lc.mine.skywars.map.MapSpawn;
+import lc.mine.skywars.tops.TopManager;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.WorldSettings.EnumGamemode;
@@ -73,7 +75,10 @@ public class PlayerLeaveGameListener implements Listener {
 
     private void onPlayerLeaveFromGame(final Player player) {
         final UUID uuid = player.getUniqueId();
-        database.getCached(uuid).deaths++;
+        final User victimData = database.getCached(uuid);
+        victimData.deaths++;
+        TopManager.calculateDeaths(victimData);
+
         if (player.getKiller() != null) {
             database.getCached(player.getKiller().getUniqueId()).kills++;
         }
@@ -104,7 +109,10 @@ public class PlayerLeaveGameListener implements Listener {
             Bukkit.getServer().shutdown();
         }, 200);
 
-        database.getCached(lastPlayerLive.getUniqueID()).wins++;
+        final User winnerData = database.getCached(lastPlayerLive.getUniqueID());
+        winnerData.wins++;
+        TopManager.calculateWins(winnerData);
+
         lastPlayerLive.getBukkitEntity().sendTitle(Messages.get("win-title"), Messages.get("win-subtitle"));
         Bukkit.broadcastMessage(Messages.get("win").replace("%winner%", lastPlayerLive.getName()));
     } 

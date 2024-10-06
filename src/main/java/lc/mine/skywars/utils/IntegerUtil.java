@@ -23,12 +23,14 @@ public class IntegerUtil {
         return false;
     }
 
-    public static int calculateRows(final int amountItems) {
-        if (amountItems % 9 == 0) {
-            return (amountItems >= 6) ? 6 : amountItems;
+    public static int calculateRows(int amountItems) {
+        if (amountItems <= 9) {
+            return 9; 
         }
-        final int amountRows = ((amountItems / 9) + 1) * 9;
-        return amountRows >= 6 ? 6 : amountRows;
+        if (amountItems % 9 == 0) {
+            return amountItems;    
+        }
+        return 9 * (amountItems / 9 + 1);
     }
 
 

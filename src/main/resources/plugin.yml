@@ -10,3 +10,5 @@ website: ichocomilk.site
 commands:
   skywars:
     description: "Skywars command"
+  top:
+    description: "See skywars tops"
