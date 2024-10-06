@@ -20,7 +20,7 @@ public final class TopFiles {
     }
     
     public void start() {
-        TopStorage.set(new TopStorage(this.read("kills"), this.read("deaths")));
+        TopStorage.set(new TopStorage(this.read("wins"), this.read("deaths")));
     }
     
     private Top read(final String name) {

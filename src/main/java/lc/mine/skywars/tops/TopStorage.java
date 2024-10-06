@@ -6,9 +6,9 @@ public final class TopStorage  {
   
   private static TopStorage storage;
 
-    public TopStorage(Top deaths, Top wins) {
-        this.deaths = deaths;
+    public TopStorage(Top wins, Top deaths) {
         this.wins = wins;
+        this.deaths = deaths;
     }
 
     public static Top wins() {
