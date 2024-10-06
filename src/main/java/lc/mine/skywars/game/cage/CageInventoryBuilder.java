@@ -6,6 +6,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import lc.mine.skywars.game.cage.CageInventory.Cage;
+
 public class CageInventoryBuilder {
     
     public Inventory buildInventories() {
@@ -120,12 +122,12 @@ public class CageInventoryBuilder {
             final int remainItems = amountItems - itemsIndex;
             final int endIndex = (remainItems > 45) ? itemsIndex + 45 : amountItems;
 
-            final Material[] itemsInInventory = new Material[(remainItems > 45) ? 45 : remainItems];
+            final Cage[] cages = new Cage[(remainItems > 45) ? 45 : remainItems];
 
-            final CageInventory previewPage = new CageInventory(inventoryIndex, itemsInInventory);
+            final CageInventory previewPage = new CageInventory(inventoryIndex, cages);
             final Inventory previewInventory = Bukkit.createInventory(previewPage, 54, "Seleciona tu caja");
 
-            setItems(availableCagesMaterials, itemsIndex, endIndex, previewInventory, itemsInInventory);
+            setItems(availableCagesMaterials, itemsIndex, endIndex, previewInventory, cages);
 
             previewPage.setInventories(previewInventories);
             if (inventoryIndex != 0) {
@@ -142,26 +144,33 @@ public class CageInventoryBuilder {
         return previewInventories[0];
     }
 
-    private void setItems(final Material[] items, final int startIndex, final int endIndex, final Inventory inventory, final Material[] itemsInInventory) {
+    private void setItems(final Material[] items, final int startIndex, final int endIndex, final Inventory inventory, final Cage[] cages) {
         int slot = 0;
         for (int i = startIndex; i < endIndex; i++) {
             final ItemStack item = new ItemStack(items[i]);
             final ItemMeta meta = item.getItemMeta();
+            String permission, permissionMessage;
             if (i <= 20) {
                 meta.setDisplayName("§a§lVIP");
+                permission = "vip";
+                permissionMessage = "§fNecesitas el rango §a§lVIP §fO superior";
             } else if (i <= 40) {
                 meta.setDisplayName("§a§lSVIP");
+                permission = "svip";
+                permissionMessage = "§fNecesitas el rango §a§lSVIP §fO superior";
             } else if (i <= 60) {
                 meta.setDisplayName("§6§lELITE");
+                permission = "elite";
+                permissionMessage = "§fNecesitas el rango §6§lELITE §fO superior";
             } else {
                 meta.setDisplayName("§c§lOPTIMUM");
+                permission = "optimum";
+                permissionMessage = "§fNecesitas el rango §c§lOPTIMUM §fO superior";
             }
             item.setItemMeta(meta);
-            itemsInInventory[slot] = items[i];
+            cages[slot] = new Cage(permission, items[i], permissionMessage);
+
             inventory.setItem(slot++, item);
-        }
-        for (final Material b : itemsInInventory) {
-            System.out.println(b.name());
         }
     }
 }

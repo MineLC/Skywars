@@ -12,12 +12,12 @@ final class CageInventory implements ClickableInventory {
     
     private Inventory[] inventories;
 
-    private final Material[] cageMaterials;
+    private final Cage[] cages;
     private final int inventoryIndex;
 
-    public CageInventory(int inventoryIndex, Material[] cageMaterials) {
+    public CageInventory(int inventoryIndex, Cage[] cages) {
         this.inventoryIndex = inventoryIndex;
-        this.cageMaterials = cageMaterials;
+        this.cages = cages;
     }
 
     @Override
@@ -36,15 +36,24 @@ final class CageInventory implements ClickableInventory {
             event.getWhoClicked().openInventory(inventories[inventoryIndex + 1]);
             return;
         }
-        if (slot >= cageMaterials.length) {
+        if (slot >= cages.length) {
             return;
         }
+        final Cage cage = cages[slot];
         final Location location = event.getWhoClicked().getLocation();
-        GameCage.build(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), cageMaterials[slot]);
-        SkywarsPlugin.getInstance().getManager().getDatabase().getCached(event.getWhoClicked().getUniqueId()).cageMaterial = cageMaterials[slot];
+
+        if (!event.getWhoClicked().hasPermission(cage.permission)) {
+            event.getWhoClicked().sendMessage(cage.permissionMessage);
+            return;
+        }
+
+        GameCage.build(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), cage.material);
+        SkywarsPlugin.getInstance().getManager().getDatabase().getCached(event.getWhoClicked().getUniqueId()).cageMaterial = cage.material;
     }
 
     public void setInventories(Inventory[] inventories) {
         this.inventories = inventories;
     }
+
+    static final record Cage(String permission, Material material, String permissionMessage){}
 }
