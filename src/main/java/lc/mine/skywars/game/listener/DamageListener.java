@@ -22,6 +22,11 @@ public class DamageListener implements Listener {
         }
         if (event.getCause() == DamageCause.FALL) {
             event.setDamage(event.getDamage() / 2);
+            return;
+        }
+        if (event.getCause() == DamageCause.VOID) {
+            event.setDamage(player.getMaxHealth());
+            return;
         }
     }
 }

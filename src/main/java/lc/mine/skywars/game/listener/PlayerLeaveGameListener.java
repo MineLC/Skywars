@@ -97,12 +97,12 @@ public class PlayerLeaveGameListener implements Listener {
             }
         }
 
-        GameState.currentState = GameState.FINISH;
         Messages.send(player, "death");
 
         if (alivePlayers != 1) {          
             return;
         }
+        GameState.currentState = GameState.FINISH;
 
         Bukkit.getScheduler().runTaskLater(SkywarsPlugin.getInstance(), () -> {
             database.saveAll();

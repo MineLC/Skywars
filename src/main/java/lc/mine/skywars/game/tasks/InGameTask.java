@@ -26,7 +26,7 @@ public class InGameTask implements Runnable {
 
     public InGameTask(GameMap map, LongOpenHashSet chestsInCooldown) {
         this.map = map;
-        this.nextRefill = 300;
+        this.nextRefill = 120;
         this.chestsInCooldown = chestsInCooldown;
     }
 
@@ -37,7 +37,7 @@ public class InGameTask implements Runnable {
     @Override
     public void run() {
         if (--nextRefill <= 0) {
-            nextRefill = 300;
+            nextRefill = 120;
             chestsInCooldown.clear();
             Bukkit.broadcastMessage(Messages.get("chest-refill"));
         }
