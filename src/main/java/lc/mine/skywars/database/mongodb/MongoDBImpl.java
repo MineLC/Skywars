@@ -81,7 +81,7 @@ final class MongoDBImpl implements Database {
         }
         setIf(document, CAGE_MATERIAL, user.cageMaterial, Material.GLASS);
         if (!user.kits.isEmpty()) {
-            document.put(SELECTED_KIT, user.kits);    
+            document.put(KITS, user.kits);    
         }
         if (document.isEmpty()) {
             return null;
