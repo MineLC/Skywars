@@ -6,6 +6,6 @@ public class TimeUtil {
         final int S = seconds % 60;
         final int M = seconds / 60 % 60;
 
-        return M + ":" + ((S < 9) ? "0"+S : S);
+        return M + ":" + ((S <= 9) ? "0"+S : S);
     }
 }

@@ -55,13 +55,17 @@ public class PlayerLeaveGameListener implements Listener {
             for (final MapSpawn spawn : spawns) {
                 if (spawn.playerUsingIt != null && spawn.playerUsingIt.equals(uuid)) {
                     spawn.playerUsingIt = null;
-                    return;
+                    break;
                 }
             }
+            database.save(event.getPlayer());
             return;
         }
 
         if (event.getPlayer().getGameMode() != GameMode.SPECTATOR) {
+            if (database.getCached(event.getPlayer().getUniqueId()) == null) { // Prevent fast login/quit
+                return;
+            }
             onPlayerLeaveFromGame(event.getPlayer());
             database.save(event.getPlayer());
         }

@@ -29,6 +29,7 @@ public class PregameListener implements Listener {
         if (GameState.currentState != GameState.PREGAME) {
             return;
         }
+        event.setCancelled(true);
         final Material type = event.getMaterial();
         if (type == Material.BOW) {
             event.getPlayer().openInventory(kits.inventory);

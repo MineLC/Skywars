@@ -54,20 +54,21 @@ final class MongoDBImpl implements Database {
     @Override
     public void save(final Player player) {
         final User data = cache.remove(player.getUniqueId());
+
         if (data == null) {
             return;
         }
         if (data.isNew()) {
             final Document newData = getNew(data);
             if (newData != null) {
-                service.submit(() -> collection.insertOne(newData));
+                service.execute(() -> collection.insertOne(newData));
             }
             return;
         }
 
         final Bson query = createUpdateQuery(data);
         if (query != null) {
-            service.submit(() -> collection.updateOne(Filters.eq("_id", player.getUniqueId()), query));
+            service.execute( () -> collection.updateOne(Filters.eq("_id", player.getUniqueId()), query));
         }
     }
     private Document getNew(final User user) {
@@ -75,7 +76,9 @@ final class MongoDBImpl implements Database {
         setIf(document, KILLS, user.kills, 0);
         setIf(document, DEATHS, user.deaths, 0);
         setIf(document, WINS, user.wins, 0);
-        setIf(document, KITS, user.selectedKit.name(), null);
+        if (user.selectedKit != null) {
+            document.put(SELECTED_KIT, user.selectedKit.name());
+        }
         setIf(document, CAGE_MATERIAL, user.cageMaterial, Material.GLASS);
         if (!user.kits.isEmpty()) {
             document.put(SELECTED_KIT, user.kits);    
@@ -88,43 +91,43 @@ final class MongoDBImpl implements Database {
     }
 
     private Bson createUpdateQuery(final User user) {
-        final List<Bson> update = new ArrayList<>();
-
-        setIf(update, KILLS, user.kills, 0);
-        setIf(update, DEATHS, user.deaths, 0);
-        setIf(update, WINS, user.wins, 0);
-        setIf(update, KITS, user.selectedKit, null);
-        setIf(update, CAGE_MATERIAL, user.cageMaterial, Material.GLASS);
-        if (!user.kits.isEmpty()) {
-            update.add(Updates.set(SELECTED_KIT, user.kits));    
+        final List<Bson> updates = new ArrayList<>();
+        setIf(updates, KILLS, user.kills, 0);
+        setIf(updates, DEATHS, user.deaths, 0);
+        setIf(updates, WINS, user.wins, 0);
+        if (user.selectedKit != null) {
+            updates.add(Updates.set(SELECTED_KIT, user.selectedKit.name()));
         }
-        if (update.isEmpty()) {
+        setIf(updates, CAGE_MATERIAL, user.cageMaterial, Material.GLASS);
+        if (!user.kits.isEmpty()) {
+            updates.add(Updates.set(KITS, user.kits));    
+        }
+        if (updates.isEmpty()) {
             return null;
-        } 
-        return Updates.combine(update);
+        }
+        return Updates.combine(updates);
     }
-
     private void setIf(final Document document, final String key, final Object value, final Object compare) {
-        if (value != compare) {
+        if (!value.equals(compare)) {
             document.put(key, value);
         }
     }
 
     private void setIf(final List<Bson> updates, final String name, final Object value, final Object compare) {
-        if (value != compare) {
+        if (!value.equals(compare)) {
             updates.add(Updates.set(name, value));
         }
     }
 
     @Override
     public void load(final Player player, final CompleteOperation operation) {
-        service.submit(() -> {
+        service.execute(() -> {
             final UUID uuid = player.getUniqueId();
             final Document document = collection.find(Filters.eq("_id", uuid)).limit(1).first();
             if (document == null) {
                 final User user = new User.New(uuid, player.getName());
                 cache.put(uuid, user);
-                operation.execute(user);
+                SkywarsPlugin.getInstance().getServer().getScheduler().runTask(SkywarsPlugin.getInstance(), ()->operation.execute(user));
                 return;
             }
         
@@ -139,14 +142,14 @@ final class MongoDBImpl implements Database {
                 user.cageMaterial = Material.getMaterial(materialName);
             }
 
-            final List<String> kits = document.getList(KITS, String.class, null);
-            if (kits != null) {
+            final List<String> kits = document.getList(KITS, String.class, List.of());
+            if (!kits.isEmpty()) {
                 user.kits = new ObjectOpenHashSet<>(kits);
             }
             user.selectedKit = SkywarsPlugin.getInstance().getManager().getConfig().kits.perName.get(document.getString(SELECTED_KIT));
 
             cache.put(uuid, user);
-            operation.execute(user);
+            SkywarsPlugin.getInstance().getServer().getScheduler().runTask(SkywarsPlugin.getInstance(), ()->operation.execute(user));
         });
     }
 

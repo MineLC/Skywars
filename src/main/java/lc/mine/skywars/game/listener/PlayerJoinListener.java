@@ -56,6 +56,7 @@ public class PlayerJoinListener implements Listener {
         }
         if (spawnAvailable == null) {
             event.getPlayer().kickPlayer(Messages.get("game-full"));
+            return;
         }
 
         final MapSpawn immutableSpawn = spawnAvailable;

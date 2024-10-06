@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import lc.mine.skywars.SkywarsPlugin;
+
 public class NoneDatabase implements Database {
 
     private final Map<UUID, User> cache = new HashMap<>();
@@ -19,7 +21,7 @@ public class NoneDatabase implements Database {
     public void load(Player player, CompleteOperation operation) {
         final User user = new User(player.getUniqueId(), player.getName());
         cache.put(player.getUniqueId(), user);
-        operation.execute(user);
+        SkywarsPlugin.getInstance().getServer().getScheduler().runTask(SkywarsPlugin.getInstance(), ()->operation.execute(user));
     }
 
     @Override
