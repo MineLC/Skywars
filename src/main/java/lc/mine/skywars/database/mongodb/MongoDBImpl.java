@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.mongodb.client.MongoClient;
@@ -36,7 +37,8 @@ final class MongoDBImpl implements Database {
         DEATHS = "deaths",
         KITS = "kits",
         SELECTED_KIT = "kit",
-        WINS = "wins";
+        WINS = "wins",
+        CAGE_MATERIAL = "cage";
 
     MongoDBImpl(MongoClient client, MongoCollection<Document> collection, ExecutorService service) {
         this.client = client;
@@ -74,6 +76,7 @@ final class MongoDBImpl implements Database {
         setIf(document, DEATHS, user.deaths, 0);
         setIf(document, WINS, user.wins, 0);
         setIf(document, KITS, user.selectedKit.name(), null);
+        setIf(document, CAGE_MATERIAL, user.cageMaterial, Material.GLASS);
         if (!user.kits.isEmpty()) {
             document.put(SELECTED_KIT, user.kits);    
         }
@@ -91,6 +94,7 @@ final class MongoDBImpl implements Database {
         setIf(update, DEATHS, user.deaths, 0);
         setIf(update, WINS, user.wins, 0);
         setIf(update, KITS, user.selectedKit, null);
+        setIf(update, CAGE_MATERIAL, user.cageMaterial, Material.GLASS);
         if (!user.kits.isEmpty()) {
             update.add(Updates.set(SELECTED_KIT, user.kits));    
         }
@@ -120,7 +124,7 @@ final class MongoDBImpl implements Database {
             if (document == null) {
                 final User user = new User.New(uuid, player.getName());
                 cache.put(uuid, user);
-                operation.execute();
+                operation.execute(user);
                 return;
             }
         
@@ -130,6 +134,11 @@ final class MongoDBImpl implements Database {
             user.deaths = document.getInteger(DEATHS, 0);
             user.wins = document.getInteger(WINS, 0);
 
+            String materialName = document.getString(CAGE_MATERIAL);
+            if (materialName != null) {
+                user.cageMaterial = Material.getMaterial(materialName);
+            }
+
             final List<String> kits = document.getList(KITS, String.class, null);
             if (kits != null) {
                 user.kits = new ObjectOpenHashSet<>(kits);
@@ -137,7 +146,7 @@ final class MongoDBImpl implements Database {
             user.selectedKit = SkywarsPlugin.getInstance().getManager().getConfig().kits.perName.get(document.getString(SELECTED_KIT));
 
             cache.put(uuid, user);
-            operation.execute();
+            operation.execute(user);
         });
     }
 

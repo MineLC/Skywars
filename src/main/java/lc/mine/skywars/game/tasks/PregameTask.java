@@ -3,7 +3,6 @@ package lc.mine.skywars.game.tasks;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -15,6 +14,7 @@ import lc.mine.skywars.config.ConfigManager;
 import lc.mine.skywars.config.message.Messages;
 import lc.mine.skywars.database.User;
 import lc.mine.skywars.game.GameState;
+import lc.mine.skywars.game.cage.GameCage;
 import lc.mine.skywars.kit.KitAdder;
 import lc.mine.skywars.map.MapSpawn;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -66,7 +66,7 @@ public class PregameTask implements Runnable {
         final World world = manager.getMap().world();
         for (final MapSpawn spawn : spawns) {
             if (spawn.playerUsingIt != null) {
-                world.getBlockAt(spawn.x, spawn.y-1, spawn.z).setType(Material.AIR);
+                GameCage.delete(world, spawn.x, spawn.y, spawn.z);
                 spawn.playerUsingIt = null;
             }
         }
@@ -95,6 +95,7 @@ public class PregameTask implements Runnable {
         if (data.chestRefillVoteIndex != -1) {
             chestVotes[data.chestRefillVoteIndex]++;
         }
+        bukkitPlayer.closeInventory();
 
         if (data.selectedKit == null) {
             KitAdder.add(bukkitPlayer, manager.getConfig().kits.defaultKit);    

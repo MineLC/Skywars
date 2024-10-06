@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -52,6 +53,9 @@ public class ItemDeserializer {
         }
         if (lore != null) {
             meta.setLore(MessageColor.colorList(lore));
+        }
+        if (section.getBoolean("hide-atributes")) {
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         }
         itemStack.setItemMeta(meta);
         return itemStack;

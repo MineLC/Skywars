@@ -3,6 +3,7 @@ package lc.mine.skywars.game.tasks;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import io.github.ichocomilk.lightsidebar.nms.v1_8R3.Sidebar1_8R3;
@@ -54,17 +55,30 @@ public class InGameTask implements Runnable {
         final String refill = TimeUtil.getMinutesAndSeconds(nextRefill);
         for (final EntityPlayer player : players) {
             final Player bukkitPlayer = player.getBukkitEntity();
-            sidebar.setLines(sidebar.createLines(new String[]{
-                "",
-                "§fRefill: §e" + refill,
-                "",
-                "§fAsesinatos: §c" + SkywarsPlugin.getInstance().getManager().getDatabase().getCached(player.getUniqueID()).kills,
-                "§fJugadores: §a" + amountPlayerLiving,
-                "",
-                "§fMapa: " + map.displayName() ,
-                "",
-                "§bplay.mine.lc"
-            }));
+            if (bukkitPlayer.getGameMode() == GameMode.SPECTATOR) {
+                sidebar.setLines(sidebar.createLines(new String[]{
+                    "",
+                    "§fRefill: §e" + refill,
+                    "",
+                    "§fJugadores: §a" + amountPlayerLiving,
+                    "",
+                    "§fMapa: " + map.displayName() ,
+                    "",
+                    "§bplay.mine.lc"
+                }));
+            } else {
+                sidebar.setLines(sidebar.createLines(new String[]{
+                    "",
+                    "§fRefill: §e" + refill,
+                    "",
+                    "§fAsesinatos: §c" + SkywarsPlugin.getInstance().getManager().getDatabase().getCached(player.getUniqueID()).kills,
+                    "§fJugadores: §a" + amountPlayerLiving,
+                    "",
+                    "§fMapa: " + map.displayName() ,
+                    "",
+                    "§bplay.mine.lc"
+                }));
+            }
             sidebar.sendLines(bukkitPlayer);
             sidebar.sendTitle(bukkitPlayer);
         }

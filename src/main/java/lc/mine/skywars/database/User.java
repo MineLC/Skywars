@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Material;
+
 import lc.mine.skywars.kit.Kit;
 
 public class User {
@@ -20,6 +22,8 @@ public class User {
 
     public int chestRefillVoteIndex = -1;
     public Kit selectedKit;
+
+    public Material cageMaterial = Material.GLASS;
 
     public User(UUID uuid, String name) {
         this.uuid = uuid;

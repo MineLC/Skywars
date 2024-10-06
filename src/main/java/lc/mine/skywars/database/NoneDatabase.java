@@ -19,7 +19,7 @@ public class NoneDatabase implements Database {
     public void load(Player player, CompleteOperation operation) {
         final User user = new User(player.getUniqueId(), player.getName());
         cache.put(player.getUniqueId(), user);
-        operation.execute();
+        operation.execute(user);
     }
 
     @Override

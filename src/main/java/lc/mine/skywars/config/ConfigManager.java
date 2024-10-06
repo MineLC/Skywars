@@ -2,6 +2,7 @@ package lc.mine.skywars.config;
 
 import java.util.logging.Logger;
 
+import org.bukkit.inventory.Inventory;
 import org.yaml.snakeyaml.Yaml;
 
 import com.grinderwolf.swm.api.SlimePlugin;
@@ -13,6 +14,7 @@ import lc.mine.skywars.config.utils.FileUtils;
 import lc.mine.skywars.database.Database;
 import lc.mine.skywars.database.NoneDatabase;
 import lc.mine.skywars.database.mongodb.MongoDBConfig;
+import lc.mine.skywars.game.cage.CageInventoryBuilder;
 import lc.mine.skywars.kit.KitConfigManager;
 import lc.mine.skywars.map.GameMap;
 import lc.mine.skywars.map.MapConfigManager;
@@ -25,6 +27,7 @@ public class ConfigManager {
 
     private GameMap map;
     private Database database;
+    private Inventory cageInventory;
 
     public ConfigManager(Logger logger) {
         this.logger = logger;
@@ -55,6 +58,7 @@ public class ConfigManager {
         new ChestRefillConfigManager(logger).load(FileUtils.getConfig(yaml, "chest.yml"), config.chestRefill);
         new KitConfigManager(logger).load(yaml, configYML.getString("default-kit"), config.kits);
         new MessageConfig().load(FileUtils.getConfig(yaml, "messages.yml"));
+        cageInventory = new CageInventoryBuilder().buildInventories();
     }
 
     private Database loadDatabase(final ConfigSection config) {
@@ -74,6 +78,9 @@ public class ConfigManager {
     }
     public GameMap getMap() {
         return map;
+    }
+    public Inventory getCageInventory() {
+        return cageInventory;
     }
     public Config getConfig() {
         return config;

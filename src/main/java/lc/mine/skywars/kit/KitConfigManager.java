@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -21,6 +23,7 @@ import lc.mine.skywars.config.csv.deserializer.KitCSVDeserializer;
 import lc.mine.skywars.config.item.ItemDeserializer;
 import lc.mine.skywars.config.message.MessageColor;
 import lc.mine.skywars.config.utils.FileUtils;
+import lc.mine.skywars.kit.gui.KitInventory;
 import lc.mine.skywars.utils.IntegerUtil;
 
 public final class KitConfigManager {
@@ -38,6 +41,7 @@ public final class KitConfigManager {
 
         final Kit[] kits = new Kit[kitsFiles.length];
         final Map<String, Kit> perName = new Object2ObjectOpenHashMap<>();
+        final Inventory inventory = Bukkit.createInventory(new KitInventory(kits), 54);
         int i = 0;
 
         for (final File kitFile : kitsFiles) {
@@ -54,6 +58,7 @@ public final class KitConfigManager {
             final ConfigSection inventoryItemSection = kitConfig.getSection("inventory-item");
             final ItemStack inventoryItem = itemDeserializer.buildSafeItem(inventoryItemSection, "inventory-item");
             final String noPermissionMessage = kitConfig.getString("no-permission-message");
+            final int inventorySlot = inventoryItemSection.getInt("slot");
             final Kit kit = new Kit(
                 kitName,
                 armorPiece("helmet", kitConfig, itemDeserializer),
@@ -62,12 +67,12 @@ public final class KitConfigManager {
                 armorPiece("boots", kitConfig, itemDeserializer),
                 getItems(kitConfig.getStringList("items"), kitCSVDeserializer),
                 getEffects(kitConfig.getStringList("effects"), fileName),
-                inventoryItemSection.getInt("slot"),
-                inventoryItem,
+                inventorySlot,
                 kitConfig.getString("permission"),
                 noPermissionMessage == null ? null : MessageColor.fastColor(noPermissionMessage),
                 kitConfig.getInt("cost")
             );
+            inventory.setItem(inventorySlot, inventoryItem);
 
             kits[i++] = kit;
             perName.put(kitName, kit);
@@ -82,6 +87,7 @@ public final class KitConfigManager {
         configToLoad.arrayKits = kits;
         configToLoad.perName = perName;
         configToLoad.defaultKit = defaultKit;
+        configToLoad.inventory = inventory;
     }
 
     private File[] getKitsFiles() {

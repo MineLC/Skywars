@@ -11,6 +11,7 @@ import lc.mine.skywars.config.ConfigManager;
 import lc.mine.skywars.game.listener.PlayerLeaveGameListener;
 import lc.mine.skywars.game.listener.PlayerJoinListener;
 import lc.mine.skywars.game.listener.PregameListener;
+import lc.mine.skywars.game.listener.DamageListener;
 import lc.mine.skywars.game.tasks.InGameTask;
 import lc.mine.skywars.game.tasks.PregameTask;
 
@@ -28,6 +29,7 @@ public class SkywarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         final Plugin slime = Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         if (slime == null) {
             getLogger().warning("Plugin can't start because don't found slimeworldmanager");
@@ -51,8 +53,9 @@ public class SkywarsPlugin extends JavaPlugin {
         final LongOpenHashSet chestsInCooldown = new LongOpenHashSet();
         getServer().getPluginManager().registerEvents(new ChestInventoryListener(chestsInCooldown), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(manager), this);
+        getServer().getPluginManager().registerEvents(new DamageListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveGameListener(manager.getDatabase(), manager.getMap()), this);
-        getServer().getPluginManager().registerEvents(new PregameListener(manager.getConfig().chestRefill, manager.getConfig().kits), this);
+        getServer().getPluginManager().registerEvents(new PregameListener(manager.getConfig().chestRefill, manager.getConfig().kits, manager.getCageInventory()), this);
 
         new PregameTask(manager, new InGameTask(manager.getMap(), chestsInCooldown)).start();
     }

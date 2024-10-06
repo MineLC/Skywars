@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,6 +39,8 @@ public class PlayerLeaveGameListener implements Listener {
             return;
         }
         onPlayerLeaveFromGame(player);
+        final MapSpawn spawn = map.spawns()[0];
+        SkywarsPlugin.getInstance().getServer().getScheduler().runTaskLater(SkywarsPlugin.getInstance(), () -> player.teleport(new Location(map.world(), spawn.x, spawn.y, spawn.z)), 2);
     }
 
     @EventHandler
@@ -70,6 +73,7 @@ public class PlayerLeaveGameListener implements Listener {
         if (player.getKiller() != null) {
             database.getCached(player.getKiller().getUniqueId()).kills++;
         }
+        database.save(player);
 
         final List<EntityPlayer> players = MinecraftServer.getServer().getPlayerList().players;
         int alivePlayers = 0;
@@ -84,6 +88,7 @@ public class PlayerLeaveGameListener implements Listener {
             }
         }
 
+        GameState.currentState = GameState.FINISH;
         Messages.send(player, "death");
 
         if (alivePlayers != 1) {          
@@ -95,6 +100,8 @@ public class PlayerLeaveGameListener implements Listener {
             Bukkit.getServer().shutdown();
         }, 200);
 
+        database.getCached(lastPlayerLive.getUniqueID()).wins++;
+        lastPlayerLive.getBukkitEntity().sendTitle(Messages.get("win-title"), Messages.get("win-subtitle"));
         Bukkit.broadcastMessage(Messages.get("win").replace("%winner%", lastPlayerLive.getName()));
     } 
 }

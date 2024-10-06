@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.Config;
 import lc.mine.skywars.config.message.Messages;
-import lc.mine.skywars.kit.gui.KitInventoryCreator;
 
 public final class SkywarsCommand implements TabExecutor {
 
@@ -71,7 +70,7 @@ public final class SkywarsCommand implements TabExecutor {
                 ((Player)sender).openInventory(chestRefill.inventory);
                 break;
             case "kits":
-                ((Player)sender).openInventory(KitInventoryCreator.create(kits.arrayKits));
+                ((Player)sender).openInventory(kits.inventory);
                 break;
             case "msg":
                 if (args.length < 2) {

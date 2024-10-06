@@ -21,5 +21,7 @@ public class Config {
         public Kit[] arrayKits;
         public Map<String, Kit> perName;
         public Kit defaultKit;
+
+        public Inventory inventory;
     }
 }
