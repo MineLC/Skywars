@@ -23,12 +23,13 @@ public final class GameStatesConfigLoader {
 
     private void loadPregame(final ConfigSection pregame, final GameStatesConfig.PreGame configToLoad) {
         configToLoad.minPlayers = pregame.getInt("min-players");
-
+        configToLoad.countdownTime = pregame.getInt("countdown-time");
         final ConfigSection spam = pregame.getSection("spam");
         if (spam == null) {
             logger.warning("Can't found the spam section in pregame. File: gamestates.yml");
             return;
         }
+        configToLoad.spamTime = spam.getInt("start-in");
         configToLoad.spamSound = soundDeserializer.loadSound(spam, "pregame.sound");
     }
 
