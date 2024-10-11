@@ -36,7 +36,7 @@ public class PlayerLeaveGameListener implements Listener {
             return;
         }
         player.setGameMode(GameMode.SPECTATOR);
-        Messages.sendNoGet(game.getPlayers(), Messages.get("death"));
+        Messages.send(player, "death");
         final MapSpawn spawn = game.getMap().spawns()[0];
 
         gameManager.tryFindWinner(game);

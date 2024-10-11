@@ -55,7 +55,7 @@ public final class SkywarsPlugin extends JavaPlugin {
         pluginManager.registerEvents(new PlayerJoinListener(gameManager), this);
         pluginManager.registerEvents(new DamageListener(gameManager), this);
         pluginManager.registerEvents(new PlayerLeaveGameListener(gameManager, this), this);
-        pluginManager.registerEvents(new PlayerCombatLogListener(topManager), this);
+        pluginManager.registerEvents(new PlayerCombatLogListener(gameManager, topManager), this);
         pluginManager.registerEvents(new PregameListener(configManager, gameManager), this);
 
         new GameTimer(gameManager, topManager, configManager).start(this);
