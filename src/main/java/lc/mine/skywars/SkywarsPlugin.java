@@ -15,6 +15,7 @@ import lc.mine.skywars.game.states.timer.GameTimer;
 import lc.mine.skywars.game.top.TopFiles;
 import lc.mine.skywars.game.top.TopManager;
 import lc.mine.skywars.game.listener.InventoryListener;
+import lc.mine.skywars.game.listener.PlayerCombatLogListener;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.listener.DamageListener;
 
@@ -53,7 +54,8 @@ public final class SkywarsPlugin extends JavaPlugin {
         pluginManager.registerEvents(new InventoryListener(gameManager), this);
         pluginManager.registerEvents(new PlayerJoinListener(gameManager), this);
         pluginManager.registerEvents(new DamageListener(gameManager), this);
-        pluginManager.registerEvents(new PlayerLeaveGameListener(gameManager, topManager, this), this);
+        pluginManager.registerEvents(new PlayerLeaveGameListener(gameManager, this), this);
+        pluginManager.registerEvents(new PlayerCombatLogListener(topManager), this);
         pluginManager.registerEvents(new PregameListener(configManager, gameManager), this);
 
         new GameTimer(gameManager, topManager, configManager).start(this);
