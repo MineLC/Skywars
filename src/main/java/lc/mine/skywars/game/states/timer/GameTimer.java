@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import lc.mine.skywars.config.ConfigManager;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.SkywarsGame;
+import lc.mine.skywars.game.top.TopManager;
 
 public final class GameTimer implements Runnable {
 
@@ -16,11 +17,11 @@ public final class GameTimer implements Runnable {
     private final PregameTimer pregameTimer;
 
 
-    public GameTimer(GameManager gameManager, final ConfigManager configManager) {
+    public GameTimer(final GameManager gameManager, final TopManager topManager, final ConfigManager configManager) {
         this.gameManager = gameManager;
         this.endGameTimer = new EndGameTimer(configManager.getGameStatesConfig().getEndgameConfig());
         this.inGameTimer = new InGameTimer(configManager.getGameStatesConfig().getInGameConfig());
-        this.pregameTimer = new PregameTimer(configManager.getGameStatesConfig().getPregameConfig(), configManager.getKitsConfig(), configManager.getChestRefillConfig());
+        this.pregameTimer = new PregameTimer(topManager, configManager.getGameStatesConfig().getPregameConfig(), configManager.getKitsConfig(), configManager.getChestRefillConfig());
     }
 
     public void start(final JavaPlugin plugin) {

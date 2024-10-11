@@ -13,6 +13,7 @@ import lc.mine.skywars.game.listener.PlayerJoinListener;
 import lc.mine.skywars.game.listener.PregameListener;
 import lc.mine.skywars.game.states.timer.GameTimer;
 import lc.mine.skywars.game.top.TopFiles;
+import lc.mine.skywars.game.top.TopManager;
 import lc.mine.skywars.game.listener.InventoryListener;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.listener.DamageListener;
@@ -22,7 +23,8 @@ import com.grinderwolf.swm.api.SlimePlugin;
 public final class SkywarsPlugin extends JavaPlugin {
 
     private final ConfigManager configManager = new ConfigManager(this);
-    private final GameManager gameManager = new GameManager(configManager.getGameStatesConfig(), this);
+    private final TopManager topManager = new TopManager(configManager.getTopConfig(), new TopFiles(this, configManager.getTopConfig()));
+    private final GameManager gameManager = new GameManager(configManager.getGameStatesConfig(), topManager, this);
 
     private SlimePlugin slimePlugin;
     private CorePlugin corePlugin;
@@ -43,8 +45,7 @@ public final class SkywarsPlugin extends JavaPlugin {
         this.corePlugin = (CorePlugin)core;
         this.slimePlugin = (SlimePlugin)slime;       
 
-        new TopFiles(this, configManager.getTopConfig()).loadTops();
-
+        topManager.load();
         configManager.load(slimePlugin, LoadOption.ALL);
 
         getCommand("skywars").setExecutor(new SkywarsCommand(this));
@@ -52,10 +53,10 @@ public final class SkywarsPlugin extends JavaPlugin {
         pluginManager.registerEvents(new InventoryListener(gameManager), this);
         pluginManager.registerEvents(new PlayerJoinListener(gameManager), this);
         pluginManager.registerEvents(new DamageListener(gameManager), this);
-        pluginManager.registerEvents(new PlayerLeaveGameListener(gameManager, this), this);
+        pluginManager.registerEvents(new PlayerLeaveGameListener(gameManager, topManager, this), this);
         pluginManager.registerEvents(new PregameListener(configManager, gameManager), this);
 
-        new GameTimer(gameManager, configManager).start(this);
+        new GameTimer(gameManager, topManager, configManager).start(this);
     }
 
     public void reload(final LoadOption option) {
@@ -64,7 +65,7 @@ public final class SkywarsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        new TopFiles(this, configManager.getTopConfig()).saveAll();
+        topManager.save();
         SkywarsDatabase.getDatabase().close();
     }
 

@@ -17,14 +17,17 @@ import lc.mine.skywars.game.kit.KitAdder;
 import lc.mine.skywars.game.kit.KitConfig;
 import lc.mine.skywars.game.states.GameState;
 import lc.mine.skywars.game.states.GameStatesConfig;
+import lc.mine.skywars.game.top.TopManager;
 import lc.mine.skywars.map.MapSpawn;
 
 final class PregameTimer {
     private final GameStatesConfig.PreGame pregameConfig;
     private final KitConfig kitConfig;
     private final ChestRefillConfig chestRefillConfig;
+    private final TopManager topManager;
     
-    PregameTimer(GameStatesConfig.PreGame pregameConfig, KitConfig kitConfig, ChestRefillConfig chestRefillConfig) {
+    PregameTimer(TopManager topManager, GameStatesConfig.PreGame pregameConfig, KitConfig kitConfig, ChestRefillConfig chestRefillConfig) {
+        this.topManager = topManager;
         this.pregameConfig = pregameConfig;
         this.kitConfig = kitConfig;
         this.chestRefillConfig = chestRefillConfig;
@@ -94,7 +97,8 @@ final class PregameTimer {
 
         final User data = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
         data.played++;
-
+        topManager.calculatePlayed(data, player.getName());    
+    
         if (data.chestRefillVoteIndex != -1) {
             chestVotes[data.chestRefillVoteIndex]++;
         }

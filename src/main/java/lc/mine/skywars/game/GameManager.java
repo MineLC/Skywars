@@ -13,6 +13,7 @@ import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.database.User;
 import lc.mine.skywars.game.states.GameState;
 import lc.mine.skywars.game.states.GameStatesConfig;
+import lc.mine.skywars.game.top.TopManager;
 import lc.mine.skywars.map.MapSpawn;
 import lc.mine.skywars.map.SkywarsMap;
 
@@ -20,14 +21,16 @@ public final class GameManager {
 
     private final Map<UUID, PlayerInGame> playersInGame = new Object2ObjectOpenHashMap<>();
     private final GameStatesConfig gameStatesConfig;
+    private final TopManager topManager;
     private final SkywarsPlugin plugin;
 
     private SkywarsGame[] games;
     private boolean haveMaps;
 
-    public GameManager(GameStatesConfig gameStatesConfig, SkywarsPlugin plugin) {
+    public GameManager(GameStatesConfig gameStatesConfig, TopManager topManager, SkywarsPlugin plugin) {
         this.gameStatesConfig = gameStatesConfig;
         this.plugin = plugin;
+        this.topManager = topManager;
     }
 
     public void join(final Player player, final SkywarsGame game) {
@@ -114,6 +117,7 @@ public final class GameManager {
 
         final User winnerData = SkywarsDatabase.getDatabase().getCached(lastPlayerLive.getUniqueId());
         winnerData.wins++;
+        topManager.calculateWins(winnerData, lastPlayerLive.getName());
 
         lastPlayerLive.sendTitle(Messages.get("win-title"), Messages.get("win-subtitle"));
         Messages.sendNoGet(game.getPlayers(), Messages.get("win").replace("%winner%", lastPlayerLive.getName()));

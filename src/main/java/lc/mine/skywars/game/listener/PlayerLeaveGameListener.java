@@ -13,18 +13,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 import lc.mine.combatlog.events.PlayerDeathCombatLog;
 import lc.mine.skywars.config.message.Messages;
 import lc.mine.skywars.database.SkywarsDatabase;
+import lc.mine.skywars.database.User;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.SkywarsGame;
+import lc.mine.skywars.game.top.TopManager;
 import lc.mine.skywars.map.MapSpawn;
 
 public class PlayerLeaveGameListener implements Listener {
 
     private final JavaPlugin plugin;
     private final GameManager gameManager;
+    private final TopManager topManager;
 
-    public PlayerLeaveGameListener(GameManager gameManager, JavaPlugin plugin) {
+    public PlayerLeaveGameListener(GameManager gameManager, TopManager topManager, JavaPlugin plugin) {
         this.gameManager = gameManager;
         this.plugin = plugin;
+        this.topManager = topManager;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -46,9 +50,14 @@ public class PlayerLeaveGameListener implements Listener {
 
     @EventHandler
     public void onPlayerCombatLog(final PlayerDeathCombatLog event) {
-        SkywarsDatabase.getDatabase().getCached(event.getVictim().getUniqueId()).deaths++;
+        final User victimData = SkywarsDatabase.getDatabase().getCached(event.getVictim().getUniqueId());
+        victimData.deaths++;
+        topManager.calculateDeaths(victimData, event.getVictim().getName());
+
         if (event.getKiller() != null) {
-            SkywarsDatabase.getDatabase().getCached(event.getKiller().getUniqueId()).kills++;
+            final User killerData = SkywarsDatabase.getDatabase().getCached(event.getKiller().getUniqueId());
+            killerData.kills++;
+            topManager.calculateKills(killerData, event.getKiller().getName());
         }
     }
 
