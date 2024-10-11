@@ -1,6 +1,6 @@
 main: lc.mine.skywars.SkywarsPlugin
 name: Skywars
-version: 1.0-SNAPSHOT
+version: 2.0
 
 description: Optimized skywars 1.8
 
