@@ -18,6 +18,7 @@ public final class TopConfig {
     public static final class TopSelector {
         int inventorySlot;
         ItemStack itemInventory;
+        String inventoryTitle;
         Top top;
         
         public int getInventorySlot() {
@@ -28,6 +29,9 @@ public final class TopConfig {
         }
         public ItemStack getItemInventory() {
             return itemInventory;
+        }
+        public String getInventoryTitle() {
+            return inventoryTitle;
         }
     }
 

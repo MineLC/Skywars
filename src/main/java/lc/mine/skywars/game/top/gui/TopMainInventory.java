@@ -4,6 +4,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import lc.mine.skywars.game.top.TopConfig;
+import lc.mine.skywars.game.top.TopConfig.TopSelector;
 import lc.mine.skywars.utils.ClickableInventory;
 
 public class TopMainInventory implements ClickableInventory {
@@ -23,20 +24,23 @@ public class TopMainInventory implements ClickableInventory {
         final HumanEntity human = event.getWhoClicked();
 
         if (clickedSlot == topConfig.getDeathSelector().getInventorySlot()) {
-            topInventoryBuilder.buildTop(human, topConfig.getDeathSelector().getTop());
+            sendTop(human, topConfig.getDeathSelector());
             return;
         }
         if (clickedSlot == topConfig.getKillSelector().getInventorySlot()) {
-            topInventoryBuilder.buildTop(human, topConfig.getKillSelector().getTop());
+            sendTop(human, topConfig.getKillSelector());
             return;
         }
         if (clickedSlot == topConfig.getWinSelector().getInventorySlot()) {
-            topInventoryBuilder.buildTop(human, topConfig.getWinSelector().getTop());
+            sendTop(human, topConfig.getWinSelector());
             return;
         }
         if (clickedSlot == topConfig.getPlayedSelector().getInventorySlot()) {
-            topInventoryBuilder.buildTop(human, topConfig.getPlayedSelector().getTop());
+            sendTop(human, topConfig.getPlayedSelector());
             return;
         }
+    }
+    private void sendTop(final HumanEntity human, final TopSelector topSelector) {
+        topInventoryBuilder.buildTop(human, topSelector.getTop(), topSelector.getInventoryTitle());
     }
 }

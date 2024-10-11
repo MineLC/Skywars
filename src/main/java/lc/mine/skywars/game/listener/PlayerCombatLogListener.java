@@ -9,7 +9,6 @@ import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.database.User;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.SkywarsGame;
-import lc.mine.skywars.game.states.GameState;
 import lc.mine.skywars.game.top.TopManager;
 
 public final class PlayerCombatLogListener implements Listener {
@@ -25,14 +24,13 @@ public final class PlayerCombatLogListener implements Listener {
     @EventHandler
     public void onPlayerCombatLog(final PlayerCombatLogEvent event) {
         final SkywarsGame game = gameManager.getGame(event.getVictim());
-        if (game == null || game.getState() != GameState.IN_GAME) {
+        if (game == null) {
             return;
         }
 
         final User victimData = SkywarsDatabase.getDatabase().getCached(event.getVictim().getUniqueId());
         victimData.deaths++;
         topManager.calculateDeaths(victimData, event.getVictim().getName());
-
         if (event.getKiller() != null) {
             final User killerData = SkywarsDatabase.getDatabase().getCached(event.getKiller().getUniqueId());
             killerData.kills++;

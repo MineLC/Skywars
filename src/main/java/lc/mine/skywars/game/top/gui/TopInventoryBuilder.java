@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import lc.mine.core.CorePlugin;
-import lc.mine.core.config.messages.Messages;
 import lc.mine.core.database.PlayerData;
 import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.database.User;
@@ -38,7 +37,7 @@ public final class TopInventoryBuilder {
         final User user = SkywarsDatabase.getDatabase().getCached(entity.getUniqueId());
         final PlayerData data = corePlugin.getData().getCached(entity.getUniqueId());
 
-        final Inventory inventory = Bukkit.createInventory(mainInventory, 54, Messages.get("Tops"));
+        final Inventory inventory = Bukkit.createInventory(mainInventory, 54, "Tops");
 
         inventory.setItem(topConfig.getDeathSelector().getInventorySlot(), topConfig.getDeathSelector().getItemInventory());
         inventory.setItem(topConfig.getKillSelector().getInventorySlot(), topConfig.getKillSelector().getItemInventory());
@@ -63,17 +62,32 @@ public final class TopInventoryBuilder {
         entity.openInventory(inventory);
     }
 
-    public void buildTop(final HumanEntity entity, final Top top) {
-        final Inventory inventory = Bukkit.createInventory(topInventory, 54, top.getName());
+    public void buildTop(final HumanEntity entity, final Top top, final String inventoryTitle) {
+        final Inventory inventory = Bukkit.createInventory(topInventory, 54, inventoryTitle);
 
         int slot = 0;
         for (final TopPlayer player : top.getPlayers()) {
             if (player == null) {
                 continue;
             }
-            final ItemStack itemStack = new ItemStack(Material.COAL_BLOCK);
+            Material material;
+            if (slot == 0) {
+                material = Material.DIAMOND_BLOCK;
+            } else if (slot == 1) {
+                material = Material.GOLD_BLOCK;
+            } else if (slot == 2) {
+                material = Material.IRON_BLOCK;
+            } else if (slot < 9) {
+                material = Material.REDSTONE_BLOCK;
+            } else if (slot < 19) {
+                material = Material.COAL_BLOCK;
+            } else {
+                material = Material.LOG;
+            }
+
+            final ItemStack itemStack = new ItemStack(material);
             final ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName("§6§l#"+slot + " §e"+player.name + "§7 -> " + " §f " + player.score);
+            meta.setDisplayName("§6§l#"+(slot+1) + " §e"+player.name + "§7 -> " + "§f" + player.score);
             itemStack.setItemMeta(meta);
             inventory.setItem(slot++, itemStack);
         }

@@ -2,17 +2,25 @@ amount-tops: 50
 
 kills:
   slot: 19
+  inventory-title: "Top de asesinatos"
+
   name: "&cTop de asesinatos"
   type: "IRON_SWORD"
 deaths:
   slot: 21
+  inventory-title: "Top de muertes"
+
   name: "&cTop de muertes"
   type: "BONE"
 played:
   slot: 23
+  inventory-title: "Top de partidas jugadas"
+
   name: "&dTop de partidas jugadas"
   type: "GRASS"
 wins:
   slot: 25
+  inventory-title: "Top de victorias"
+
   name: "&bTop de victorias"
   type: "DIAMOND"
