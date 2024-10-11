@@ -20,6 +20,8 @@ import lc.mine.skywars.game.kit.KitConfig;
 import lc.mine.skywars.game.kit.KitConfigLoader;
 import lc.mine.skywars.game.states.GameStatesConfig;
 import lc.mine.skywars.game.states.GameStatesConfigLoader;
+import lc.mine.skywars.game.top.TopConfig;
+import lc.mine.skywars.game.top.TopsConfigLoader;
 import lc.mine.skywars.map.SkywarsMap;
 import lc.mine.skywars.map.MapConfigLoader;
 
@@ -31,6 +33,7 @@ public class ConfigManager {
     private final ChestRefillConfig chestRefillConfig = new ChestRefillConfig();
     private final KitConfig kitsConfig = new KitConfig();
     private final GameStatesConfig gameStatesConfig = new GameStatesConfig();
+    private final TopConfig topConfig = new TopConfig();
 
     private Yaml yaml;
 
@@ -69,6 +72,9 @@ public class ConfigManager {
                 case CONFIG:
                     loadAllConfig();
                     break;
+                case TOPS:
+                    loadTopConfig();    
+                    break;
                 case GAMESTATES:
                     loadGamesStates();
                     break;
@@ -87,6 +93,7 @@ public class ConfigManager {
         loadChestRefill();
         loadKits(loadMainConfig());
         loadGamesStates();
+        loadTopConfig();
         cageInventory = new CageInventoryBuilder().buildInventories();
     }
 
@@ -113,6 +120,10 @@ public class ConfigManager {
         FileUtils.createIfAbsent("gamestates.yml");
         new GameStatesConfigLoader(logger).loadConfig(FileUtils.getConfig(yaml, "gamestates.yml"), gameStatesConfig);
     }
+    private void loadTopConfig() {
+        FileUtils.createIfAbsent("tops.yml");
+        new TopsConfigLoader(logger).load(FileUtils.getConfig(yaml, "tops.yml"), plugin.getCorePlugin(), topConfig);
+    }
 
     private ConfigSection loadMainConfig() {
         FileUtils.createIfAbsent("config.yml");
@@ -130,5 +141,8 @@ public class ConfigManager {
     }
     public ChestRefillConfig getChestRefillConfig() {
         return chestRefillConfig;
+    }
+    public TopConfig getTopConfig() {
+        return topConfig;
     }
 }

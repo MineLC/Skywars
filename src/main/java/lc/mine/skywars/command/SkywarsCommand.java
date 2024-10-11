@@ -36,7 +36,8 @@ public final class SkywarsCommand implements TabExecutor {
                         §cchestrefill §7-> Only chestrefill
                         §cmessages §7-> Only messages
                         §cmaps §7-> Only maps
-                        §cstates §7-> pregame, ingame and endgame
+                        §ctops §7-> Only tops config
+                        §cgamestates §7-> pregame, ingame and endgame
                         §cdatabase §7-> Only database
                 \n
             """.replace("%v%", version);
@@ -48,7 +49,7 @@ public final class SkywarsCommand implements TabExecutor {
             return List.of("reload", "chest", "kits", "msg");
         }
         return (args.length == 2 && args[0].equalsIgnoreCase("reload"))
-            ? List.of("all", "config", "kits", "chestrefill", "messages", "maps", "states", "database")
+            ? List.of("all", "config", "kits", "chestrefill", "messages", "maps", "states", "database", "tops")
             : List.of();
     }
 

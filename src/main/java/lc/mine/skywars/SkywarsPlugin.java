@@ -12,6 +12,7 @@ import lc.mine.skywars.game.listener.PlayerLeaveGameListener;
 import lc.mine.skywars.game.listener.PlayerJoinListener;
 import lc.mine.skywars.game.listener.PregameListener;
 import lc.mine.skywars.game.states.timer.GameTimer;
+import lc.mine.skywars.game.top.TopFiles;
 import lc.mine.skywars.game.listener.InventoryListener;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.listener.DamageListener;
@@ -42,6 +43,8 @@ public final class SkywarsPlugin extends JavaPlugin {
         this.corePlugin = (CorePlugin)core;
         this.slimePlugin = (SlimePlugin)slime;       
 
+        new TopFiles(this, configManager.getTopConfig()).loadTops();
+
         configManager.load(slimePlugin, LoadOption.ALL);
 
         getCommand("skywars").setExecutor(new SkywarsCommand(this));
@@ -61,6 +64,7 @@ public final class SkywarsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        new TopFiles(this, configManager.getTopConfig()).saveAll();
         SkywarsDatabase.getDatabase().close();
     }
 

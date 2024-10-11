@@ -17,7 +17,7 @@ public class ChestRefillGui implements ClickableInventory {
     public void onClick(InventoryClickEvent event) {
         final int slot = event.getSlot();
         event.setCancelled(true);
-
+        
         if (event.getClick() == ClickType.LEFT) {
             final int amountModes = modes.length;
             for (int i = 0; i < amountModes; i++) {

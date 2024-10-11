@@ -8,6 +8,7 @@ public enum LoadOption {
     MAPS,
     CHESTREFILL,
     GAMESTATES,
+    TOPS,
     DATABASE;
 
     public static final LoadOption[] OPTIONS = LoadOption.values();

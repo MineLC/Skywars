@@ -1,0 +1,18 @@
+amount-tops: 50
+
+kills:
+  slot: 19
+  name: "&cTop de asesinatos"
+  type: "IRON_SWORD"
+deaths:
+  slot: 21
+  name: "&cTop de muertes"
+  type: "BONE"
+played:
+  slot: 23
+  name: "&dTop de partidas jugadas"
+  type: "GRASS"
+wins:
+  slot: 25
+  name: "&bTop de victorias"
+  type: "DIAMOND"

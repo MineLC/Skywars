@@ -124,5 +124,12 @@ public class PlayerJoinListener implements Listener {
         item.setItemMeta(meta);
 
         inventory.setItem(8, item);
+
+        item = new ItemStack(Material.BOOK);
+        meta = item.getItemMeta();
+        meta.setDisplayName("§bTops");
+        item.setItemMeta(meta);
+
+        inventory.setItem(7, item);
     }
 }

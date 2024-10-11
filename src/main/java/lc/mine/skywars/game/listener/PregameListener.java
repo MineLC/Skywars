@@ -41,6 +41,9 @@ public class PregameListener implements Listener {
             case BEACON:
                 event.getPlayer().openInventory(configManager.getCageInventory());
                 break;
+            case BOOK:
+                configManager.getTopConfig().getTopInventoryBuilder().buildMainInventory(event.getPlayer());
+                break;
             default:
                 break;   
         }

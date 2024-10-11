@@ -36,6 +36,7 @@ final class MongoDBImpl implements Database {
         KILLS = "kills",
         DEATHS = "deaths",
         KITS = "kits",
+        PLAYED = "played",
         SELECTED_KIT = "kit",
         WINS = "wins",
         CAGE_MATERIAL = "cage";
@@ -77,6 +78,7 @@ final class MongoDBImpl implements Database {
         setIf(document, KILLS, user.kills, 0);
         setIf(document, DEATHS, user.deaths, 0);
         setIf(document, WINS, user.wins, 0);
+        setIf(document, PLAYED, user.played, 0);
         if (user.selectedKit != null) {
             document.put(SELECTED_KIT, user.selectedKit.name());
         }
@@ -96,6 +98,7 @@ final class MongoDBImpl implements Database {
         setIf(updates, KILLS, user.kills, 0);
         setIf(updates, DEATHS, user.deaths, 0);
         setIf(updates, WINS, user.wins, 0);
+        setIf(updates, PLAYED, user.played, 0);
         if (user.selectedKit != null) {
             updates.add(Updates.set(SELECTED_KIT, user.selectedKit.name()));
         }
@@ -137,6 +140,7 @@ final class MongoDBImpl implements Database {
             user.kills = document.getInteger(KILLS, 0);
             user.deaths = document.getInteger(DEATHS, 0);
             user.wins = document.getInteger(WINS, 0);
+            user.played = document.getInteger(PLAYED, 0);
 
             String materialName = document.getString(CAGE_MATERIAL);
             if (materialName != null) {

@@ -93,6 +93,7 @@ final class PregameTimer {
         player.setNoDamageTicks(5*20);
 
         final User data = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
+        data.played++;
 
         if (data.chestRefillVoteIndex != -1) {
             chestVotes[data.chestRefillVoteIndex]++;

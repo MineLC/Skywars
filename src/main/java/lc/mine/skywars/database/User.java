@@ -15,10 +15,10 @@ public class User {
 
     public int kills = 0;
     public int deaths = 0;
+    public int played = 0;
+    public int wins = 0;
 
     public Set<String> kits = new HashSet<>();
-
-    public int wins = 0;
 
     public int chestRefillVoteIndex = -1;
     public Kit selectedKit;
