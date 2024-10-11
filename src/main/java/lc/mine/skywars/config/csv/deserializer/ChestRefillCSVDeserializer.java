@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 
-import lc.mine.skywars.chestrefill.ChestItem;
+import lc.mine.skywars.game.chestrefill.ChestItem;
 import lc.mine.skywars.utils.IntegerUtil;
 
 public final class ChestRefillCSVDeserializer extends ItemCSVDeserializer {

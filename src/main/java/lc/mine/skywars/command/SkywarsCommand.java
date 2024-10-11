@@ -1,15 +1,13 @@
 package lc.mine.skywars.command;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 
+import lc.mine.skywars.LoadOption;
 import lc.mine.skywars.SkywarsPlugin;
-import lc.mine.skywars.config.Config;
 import lc.mine.skywars.config.message.Messages;
 
 public final class SkywarsCommand implements TabExecutor {
@@ -17,14 +15,9 @@ public final class SkywarsCommand implements TabExecutor {
     private final SkywarsPlugin plugin;
     private final String version;
 
-    private final Config.ChestRefill chestRefill;
-    private final Config.Kits kits;
-
-    public SkywarsCommand(SkywarsPlugin plugin, Config.ChestRefill chestRefill, Config.Kits kits) {
+    public SkywarsCommand(SkywarsPlugin plugin) {
         this.plugin = plugin;
         this.version = plugin.getDescription().getVersion();
-        this.chestRefill = chestRefill;
-        this.kits = kits;
     }
 
     private String format() {
@@ -34,43 +27,52 @@ public final class SkywarsCommand implements TabExecutor {
                 §6§lSkywars §bv%v% §7- §b§lMINE§6§lLC 
                 \n
                 §e/skywars
-                    §6chest §7-> §fOpen ChestRefill test
-                    §6kits §7-> §fSee all kits and select one
                     §6msg §e(key) §7-> §fSend the message
+                \n
+                    §6reload §7-> §fReload plugin
+                        §call §7-> Database, configs, etc
+                        §cconfig §7-> Messages, kits, cages, etc
+                        §ckits §7-> Only kits
+                        §cchestrefill §7-> Only chestrefill
+                        §cmessages §7-> Only messages
+                        §cmaps §7-> Only maps
+                        §cstates §7-> pregame, ingame and endgame
+                        §cdatabase §7-> Only database
                 \n
             """.replace("%v%", version);
     }
 
     @Override
     public List<String> onTabComplete(final CommandSender sender, final Command command, final String label, final String[] args) {
-        return (args.length == 1) ? List.of("reload") : null;
+        if (args.length == 1) {
+            return List.of("reload", "chest", "kits", "msg");
+        }
+        return (args.length == 2 && args[0].equalsIgnoreCase("reload"))
+            ? List.of("all", "config", "kits", "chestrefill", "messages", "maps", "states", "database")
+            : List.of();
     }
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (!sender.hasPermission("skywars.use")) {
-            sender.sendMessage("§b§lSkywars §7by §b§lMINE§6§lLC §7- §bv" + version);
-            return true;
-        }
-        if (args.length < 1) {
+        if (args.length < 1 || !sender.hasPermission("skywars.admin")) {
             sender.sendMessage(format());
             return true;
         }
         switch (args[0].toLowerCase()) {
             case "reload", "r":
-                try {
-                    plugin.reload();
-                    sender.sendMessage("§aPlugin reloaded");    
-                } catch (Exception e) {
-                    plugin.getLogger().log(Level.SEVERE, "Error reloading the plugin", e);
-                    sender.sendMessage("§cError reloading the plugin, see the console");
+                if (args.length != 2) {
+                    sender.sendMessage("§cAvailable reload options: §6" + LoadOption.OPTIONS);
+                    break;
                 }
-                break;
-            case "chest":
-                ((Player)sender).openInventory(chestRefill.inventory);
-                break;
-            case "kits":
-                ((Player)sender).openInventory(kits.inventory);
+                final String optionName = args[1].toUpperCase();
+                for (final LoadOption option : LoadOption.OPTIONS) {
+                    if (option.name().equals(optionName)) {
+                        plugin.reload(option);
+                        sender.sendMessage("§aPlugin reloaded. Option: " + option.name());    
+                        break;
+                    }
+                }
+                sender.sendMessage("§cCan't found the load option: " + optionName + " Available options: §6" + LoadOption.OPTIONS);
                 break;
             case "msg":
                 if (args.length < 2) {

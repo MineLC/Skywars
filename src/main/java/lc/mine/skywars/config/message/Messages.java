@@ -1,8 +1,13 @@
 package lc.mine.skywars.config.message;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.command.CommandSender;
+
+import lc.mine.skywars.game.PlayerInGame;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public final class Messages {
 
@@ -17,6 +22,13 @@ public final class Messages {
         final String message = get(key);
         if (message != null) {
             sender.sendMessage(message);
+        }
+    }
+
+    public static void sendNoGet(final Set<PlayerInGame> players, final String message) {
+        final BaseComponent[] components = TextComponent.fromLegacyText(message);
+        for (final PlayerInGame playerInGame : players) {
+            playerInGame.getPlayer().spigot().sendMessage(components);
         }
     }
 

@@ -1,5 +1,6 @@
 package lc.mine.skywars.config;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.inventory.Inventory;
@@ -8,81 +9,126 @@ import org.yaml.snakeyaml.Yaml;
 import com.grinderwolf.swm.api.SlimePlugin;
 
 import lc.mine.skywars.LoadOption;
-import lc.mine.skywars.chestrefill.ChestRefillConfigManager;
+import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.message.MessageConfig;
 import lc.mine.skywars.config.utils.FileUtils;
-import lc.mine.skywars.database.Database;
-import lc.mine.skywars.database.NoneDatabase;
-import lc.mine.skywars.database.mongodb.MongoDBConfig;
+import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.game.cage.CageInventoryBuilder;
-import lc.mine.skywars.kit.KitConfigManager;
-import lc.mine.skywars.map.GameMap;
-import lc.mine.skywars.map.MapConfigManager;
+import lc.mine.skywars.game.chestrefill.ChestRefillConfig;
+import lc.mine.skywars.game.chestrefill.ChestRefillConfigLoader;
+import lc.mine.skywars.game.kit.KitConfig;
+import lc.mine.skywars.game.kit.KitConfigLoader;
+import lc.mine.skywars.game.states.GameStatesConfig;
+import lc.mine.skywars.game.states.GameStatesConfigLoader;
+import lc.mine.skywars.map.SkywarsMap;
+import lc.mine.skywars.map.MapConfigLoader;
 
 public class ConfigManager {
 
+    private final SkywarsPlugin plugin;
     private final Logger logger;
 
-    private final Config config = new Config();
+    private final ChestRefillConfig chestRefillConfig = new ChestRefillConfig();
+    private final KitConfig kitsConfig = new KitConfig();
+    private final GameStatesConfig gameStatesConfig = new GameStatesConfig();
 
-    private GameMap map;
-    private Database database;
+    private Yaml yaml;
+
     private Inventory cageInventory;
 
-    public ConfigManager(Logger logger) {
-        this.logger = logger;
+    public ConfigManager(SkywarsPlugin plugin) {
+        this.plugin = plugin;
+        this.logger = plugin.getLogger();
     }
 
-    public void load(final SlimePlugin plugin, final byte option) {
-        FileUtils.createIfAbsent("chest.yml", "messages.yml");
+    public void load(final SlimePlugin slime, final LoadOption loadOption) {
+        try {
+            yaml = new Yaml();
 
-        final Yaml yaml = new Yaml();
-        final ConfigSection configYML = FileUtils.getConfig(yaml, "config.yml");
-
-        if (option == LoadOption.CONFIG) {
-            loadConfig(yaml, configYML);
-            return;
-        }
-
-        if (option == LoadOption.ALL) {
-            loadConfig(yaml, configYML);
-            map = new MapConfigManager(logger).loadMap(yaml, plugin);       
-        }
-
-        if (database == null) {
-            database = loadDatabase(FileUtils.getConfig(yaml, "config.yml"));
+            switch (loadOption) {
+                case DATABASE:
+                    loadDatabase();
+                    break;
+                case MESSAGES:
+                    loadMessages();
+                    break;
+                case MAPS:
+                    loadMaps(slime);
+                    break;
+                case KITS:
+                    loadKits(loadMainConfig());
+                    break;
+                case CHESTREFILL:
+                    loadChestRefill();
+                    break;
+                case ALL:
+                    loadAllConfig();
+                    loadDatabase();
+                    loadMaps(slime);
+                    break;
+                case CONFIG:
+                    loadAllConfig();
+                    break;
+                case GAMESTATES:
+                    loadGamesStates();
+                    break;
+                default:
+                    break;
+            }   
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Can't load the plugin. Option: " + loadOption.name(), e);
+        } finally {
+            yaml = null;
         }
     }
 
-    private void loadConfig(final Yaml yaml, final ConfigSection configYML) {
-        new ChestRefillConfigManager(logger).load(FileUtils.getConfig(yaml, "chest.yml"), config.chestRefill);
-        new KitConfigManager(logger).load(yaml, configYML.getString("default-kit"), config.kits);
-        new MessageConfig().load(FileUtils.getConfig(yaml, "messages.yml"));
+    private void loadAllConfig() {
+        loadMessages();
+        loadChestRefill();
+        loadKits(loadMainConfig());
+        loadGamesStates();
         cageInventory = new CageInventoryBuilder().buildInventories();
     }
 
-    private Database loadDatabase(final ConfigSection config) {
-        if (!config.getBoolean("enable-mongodb")) {
-            return new NoneDatabase();
-        }
-        try {
-            return new MongoDBConfig().load(config.getSection("mongodb"));
-        } catch (Exception e) {
-            logger.log(java.util.logging.Level.SEVERE, "Error trying to enable the mongodb", e);
-        }
-        return new NoneDatabase();
+    private void loadDatabase() {
+        FileUtils.createIfAbsent("database.yml");
+        SkywarsDatabase.loadDatabase(FileUtils.getConfig(yaml, "database.yml"), plugin);
+    }
+    private void loadMessages() {
+        FileUtils.createIfAbsent("messages.yml");
+        new MessageConfig().load(FileUtils.getConfig(yaml, "messages.yml"));
+    }
+    private void loadMaps(final SlimePlugin slimePlugin) {
+        final SkywarsMap map = new MapConfigLoader(logger).loadMap(yaml, plugin, slimePlugin);
+        plugin.getGameManager().setGames(map);
+    }
+    private void loadKits(final ConfigSection mainConfig) {
+        new KitConfigLoader(logger).load(plugin, yaml, mainConfig.getString("default-kit"), kitsConfig);
+    }
+    private void loadChestRefill() {
+        FileUtils.createIfAbsent("chest.yml");
+        new ChestRefillConfigLoader(logger).load(FileUtils.getConfig(yaml, "chest.yml"), chestRefillConfig);
+    }
+    private void loadGamesStates() {
+        FileUtils.createIfAbsent("gamestates.yml");
+        new GameStatesConfigLoader(logger).loadConfig(FileUtils.getConfig(yaml, "gamestates.yml"), gameStatesConfig);
     }
 
-    public Database getDatabase() {
-        return database;
+    private ConfigSection loadMainConfig() {
+        FileUtils.createIfAbsent("config.yml");
+        return FileUtils.getConfig(yaml, "config.yml");
     }
-    public GameMap getMap() {
-        return map;
-    }
+
     public Inventory getCageInventory() {
         return cageInventory;
     }
-    public Config getConfig() {
-        return config;
+    public KitConfig getKitsConfig() {
+        return kitsConfig;
+    }
+    public GameStatesConfig getGameStatesConfig() {
+        return gameStatesConfig;
+    }
+    public ChestRefillConfig getChestRefillConfig() {
+        return chestRefillConfig;
     }
 }

@@ -1,7 +1,14 @@
 package lc.mine.skywars;
 
-public final class LoadOption {
-    public static final byte
-        ALL = 0,
-        CONFIG = 1;
+public enum LoadOption {
+    ALL,
+    CONFIG,
+    MESSAGES,
+    KITS,
+    MAPS,
+    CHESTREFILL,
+    GAMESTATES,
+    DATABASE;
+
+    public static final LoadOption[] OPTIONS = LoadOption.values();
 }

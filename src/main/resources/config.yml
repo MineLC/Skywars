@@ -1,14 +1,1 @@
-enable-mongodb: false # Disable only for testing
-mongodb:
-  user: "test"
-  pass: "devtesting"
-
-  ip: "172.18.0.1"
-  port: 27017
-
-  database: "devtest"
-  collection: "collection"
-
-  executor-threads: 2
-
 default-kit: "constructor"

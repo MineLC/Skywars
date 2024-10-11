@@ -18,11 +18,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.connection.ClusterSettings;
 
+import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.ConfigSection;
 
 public final class MongoDBConfig {
 
-    public MongoDBImpl load(final ConfigSection mongodb) {
+    public MongoDBImpl load(final ConfigSection mongodb, final SkywarsPlugin plugin) {
         final String database = mongodb.getOrDefault("database", "minelc");
         final String collection = mongodb.getOrDefault("collection", "data");
     
@@ -42,8 +43,8 @@ public final class MongoDBConfig {
             .credential(credential)
             .build();
 
-        Logger.getLogger("org.mongodb").setLevel(Level.SEVERE);
-        Logger.getLogger("com.mongodb").setLevel(Level.SEVERE);
+        Logger.getLogger("org.mongodb.driver").setLevel(Level.SEVERE);
+        Logger.getLogger("com.mongodb.driver").setLevel(Level.SEVERE);
 
         final MongoClient client = MongoClients.create(settings);
 
@@ -59,6 +60,6 @@ public final class MongoDBConfig {
         if (threads == 0) {
             threads = 1;
         }
-        return new MongoDBImpl(client, mongoCollection, Executors.newFixedThreadPool(threads));
+        return new MongoDBImpl(client, mongoCollection, Executors.newFixedThreadPool(threads), plugin);
     }
 }

@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import lc.mine.skywars.SkywarsPlugin;
+import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.utils.ClickableInventory;
 
 final class CageInventory implements ClickableInventory {
@@ -23,6 +23,7 @@ final class CageInventory implements ClickableInventory {
     @Override
     public void onClick(InventoryClickEvent event) {
         final int slot = event.getSlot();
+        event.setCancelled(true);
 
         if (slot == 45) {
             if (inventoryIndex == 0) {
@@ -48,7 +49,7 @@ final class CageInventory implements ClickableInventory {
         }
 
         GameCage.build(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), cage.material);
-        SkywarsPlugin.getInstance().getManager().getDatabase().getCached(event.getWhoClicked().getUniqueId()).cageMaterial = cage.material;
+        SkywarsDatabase.getDatabase().getCached(event.getWhoClicked().getUniqueId()).cageMaterial = cage.material;
     }
 
     public void setInventories(Inventory[] inventories) {

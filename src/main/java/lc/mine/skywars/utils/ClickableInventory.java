@@ -6,7 +6,9 @@ import org.bukkit.inventory.InventoryHolder;
 
 public interface ClickableInventory extends InventoryHolder {
     
-    void onClick(final InventoryClickEvent event);
+    default void onClick(final InventoryClickEvent event) {
+        event.setCancelled(true);
+    }
 
     default Inventory getInventory() {
         return null;

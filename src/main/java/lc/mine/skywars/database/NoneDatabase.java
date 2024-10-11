@@ -1,16 +1,14 @@
 package lc.mine.skywars.database;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import lc.mine.skywars.SkywarsPlugin;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-public class NoneDatabase implements Database {
+public final class NoneDatabase implements Database {
 
-    private final Map<UUID, User> cache = new HashMap<>();
+    private final Object2ObjectOpenHashMap<UUID, User> cache = new Object2ObjectOpenHashMap<>();
 
     @Override
     public void save(Player player) {}
@@ -21,17 +19,12 @@ public class NoneDatabase implements Database {
     public void load(Player player, CompleteOperation operation) {
         final User user = new User(player.getUniqueId(), player.getName());
         cache.put(player.getUniqueId(), user);
-        SkywarsPlugin.getInstance().getServer().getScheduler().runTask(SkywarsPlugin.getInstance(), ()->operation.execute(user));
+        operation.execute(user);
     }
 
     @Override
     public User getCached(UUID uuid) {
         return cache.get(uuid);
-    }
-
-    @Override
-    public Map<UUID, User> getUsers() {
-        return cache;
     }
 
     @Override

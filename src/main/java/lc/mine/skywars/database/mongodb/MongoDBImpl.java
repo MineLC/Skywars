@@ -2,7 +2,6 @@ package lc.mine.skywars.database.mongodb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.UUID;
 
@@ -31,6 +30,7 @@ final class MongoDBImpl implements Database {
     private final MongoClient client;
     private final MongoCollection<Document> collection;
     private final ExecutorService service;
+    private final SkywarsPlugin plugin;
 
     private static final String
         KILLS = "kills",
@@ -40,10 +40,11 @@ final class MongoDBImpl implements Database {
         WINS = "wins",
         CAGE_MATERIAL = "cage";
 
-    MongoDBImpl(MongoClient client, MongoCollection<Document> collection, ExecutorService service) {
+    MongoDBImpl(MongoClient client, MongoCollection<Document> collection, ExecutorService service, SkywarsPlugin plugin) {
         this.client = client;
         this.collection = collection;
         this.service = service;
+        this.plugin = plugin;
     }
     
     @Override
@@ -127,7 +128,7 @@ final class MongoDBImpl implements Database {
             if (document == null) {
                 final User user = new User.New(uuid, player.getName());
                 cache.put(uuid, user);
-                SkywarsPlugin.getInstance().getServer().getScheduler().runTask(SkywarsPlugin.getInstance(), ()->operation.execute(user));
+                plugin.getServer().getScheduler().runTask(plugin, ()->operation.execute(user));
                 return;
             }
         
@@ -146,10 +147,10 @@ final class MongoDBImpl implements Database {
             if (!kits.isEmpty()) {
                 user.kits = new ObjectOpenHashSet<>(kits);
             }
-            user.selectedKit = SkywarsPlugin.getInstance().getManager().getConfig().kits.perName.get(document.getString(SELECTED_KIT));
+            user.selectedKit = plugin.getConfigManager().getKitsConfig().getKitsPerName().get(document.getString(SELECTED_KIT));
 
             cache.put(uuid, user);
-            SkywarsPlugin.getInstance().getServer().getScheduler().runTask(SkywarsPlugin.getInstance(), ()->operation.execute(user));
+            plugin.getServer().getScheduler().runTask(plugin, ()->operation.execute(user));
         });
     }
 
@@ -190,10 +191,5 @@ final class MongoDBImpl implements Database {
         if (!toInsert.isEmpty()) {
             collection.insertMany(toInsert);
         }
-    }
-
-    @Override
-    public Map<UUID, User> getUsers() {
-        return cache;
     }
 }

@@ -1,8 +1,7 @@
 package lc.mine.skywars.game.listener;
 
-import java.util.List;
+import java.util.Set;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,37 +15,35 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.ichocomilk.lightsidebar.nms.v1_8R3.Sidebar1_8R3;
-import lc.mine.skywars.config.ConfigManager;
 import lc.mine.skywars.config.message.Messages;
-import lc.mine.skywars.game.GameState;
+import lc.mine.skywars.database.SkywarsDatabase;
+import lc.mine.skywars.game.GameManager;
+import lc.mine.skywars.game.PlayerInGame;
+import lc.mine.skywars.game.SkywarsGame;
 import lc.mine.skywars.game.cage.GameCage;
-import lc.mine.skywars.map.GameMap;
+import lc.mine.skywars.map.SkywarsMap;
 import lc.mine.skywars.map.MapSpawn;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
 
 public class PlayerJoinListener implements Listener {
 
-    private final ConfigManager manager;
+    private final GameManager gameManager;
     
-    public PlayerJoinListener(ConfigManager manager) {
-        this.manager = manager;
+    public PlayerJoinListener(final GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final GameMap map = manager.getMap();
-        if (map == null || map.spawns() == null || map.spawns().length == 0) {
+        if (!gameManager.haveMaps()) {
+            return;
+        }   
+        final SkywarsGame game = gameManager.getGames()[0];   
+        if (game.hasStarted()) {
+            gameManager.join(event.getPlayer(), game);
             return;
         }
 
-        if (GameState.currentState != GameState.PREGAME) {
-            event.getPlayer().setGameMode(GameMode.SPECTATOR);
-            final MapSpawn spawn = map.spawns()[0];
-            event.getPlayer().teleport(new Location(map.world(), spawn.x, spawn.y, spawn.z));
-            return;
-        }
-        final MapSpawn[] spawns = map.spawns();
+        final MapSpawn[] spawns = game.getMap().spawns();
         MapSpawn spawnAvailable = null;
         for (final MapSpawn spawn : spawns) {
             if (spawn.playerUsingIt == null) {
@@ -55,16 +52,19 @@ public class PlayerJoinListener implements Listener {
             }
         }
         if (spawnAvailable == null) {
-            event.getPlayer().kickPlayer(Messages.get("game-full"));
+            Messages.send(event.getPlayer(), "game-full");
             return;
         }
-
+   
         final MapSpawn immutableSpawn = spawnAvailable;
-        manager.getDatabase().load(event.getPlayer(), (user) -> {
-            immutableSpawn.playerUsingIt = event.getPlayer().getUniqueId();
-            teleport(event.getPlayer(), immutableSpawn, map.world(), user.cageMaterial);
+        spawnAvailable.playerUsingIt = event.getPlayer().getUniqueId();
 
-            sendPreGameSidebar();
+        SkywarsDatabase.getDatabase().load(event.getPlayer(), (user) -> {
+            gameManager.join(event.getPlayer(), game);
+
+            teleport(event.getPlayer(), immutableSpawn, game.getMap().world(), user.cageMaterial);
+
+            sendPreGameSidebar(game);
             addPregameItems(event.getPlayer().getInventory());
 
             Messages.send(event.getPlayer(), "join");
@@ -80,23 +80,24 @@ public class PlayerJoinListener implements Listener {
         GameCage.build(world, x, y, z, cageMaterial);
     }
 
-    private void sendPreGameSidebar() {
-        final GameMap map = manager.getMap();
+    private void sendPreGameSidebar(final SkywarsGame game) {
+        final SkywarsMap map = game.getMap();
         final Sidebar1_8R3 sidebar = new Sidebar1_8R3();
-        final List<EntityPlayer> players = MinecraftServer.getServer().getPlayerList().players;
+        final Set<PlayerInGame> players = game.getPlayers();
         final int amountPlayers = players.size();
-        sidebar.setTitle("§6§lSkywars");
 
-        for (final EntityPlayer player : players) {
-            final Player bukkitPlayer = player.getBukkitEntity();
-            sidebar.setLines(sidebar.createLines(new String[]{
-                "",
-                "§fJugadores: §a" + amountPlayers + '/' + map.spawns().length,
-                "",
-                "§fMapa: " + map.displayName() ,
-                "",
-                "§bplay.mine.lc"
-            }));
+        sidebar.setTitle("§6§lSkywars");
+        sidebar.setLines(sidebar.createLines(new String[]{
+            "",
+            "§fJugadores: §a" + amountPlayers + '/' + map.spawns().length,
+            "",
+            "§fMapa: " + map.displayName() ,
+            "",
+            "§bplay.mine.lc"
+        }));
+
+        for (final PlayerInGame player : players) {
+            final Player bukkitPlayer = player.getPlayer();
             sidebar.sendLines(bukkitPlayer);
             sidebar.sendTitle(bukkitPlayer);
         }
@@ -123,19 +124,5 @@ public class PlayerJoinListener implements Listener {
         item.setItemMeta(meta);
 
         inventory.setItem(8, item);
-
-        item = new ItemStack(Material.EMERALD);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§aTop Wins");
-        item.setItemMeta(meta);
-
-        inventory.setItem(7, item);
-
-        item = new ItemStack(Material.PAPER);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§cTop Muertes");
-        item.setItemMeta(meta);
-
-        inventory.setItem(6, item);
     }
 }

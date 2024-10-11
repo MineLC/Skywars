@@ -7,6 +7,8 @@ description: Optimized skywars 1.8
 author: iChocoMilk
 website: ichocomilk.site
 
+depends: [LCCore, SlimeWorldManager]
+
 commands:
   skywars:
     description: "Skywars command"

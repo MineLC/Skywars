@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Material;
 
-import lc.mine.skywars.kit.Kit;
+import lc.mine.skywars.game.kit.Kit;
 
 public class User {
 
