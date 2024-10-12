@@ -71,8 +71,8 @@ final class PregameTimer {
     private void startGame(final SkywarsGame game) {
         final Set<PlayerInGame> players = game.getPlayers();
 
-        final MapSpawn[] spawns = game.getMap().spawns();
-        final World world = game.getMap().world();
+        final MapSpawn[] spawns = game.getMap().getSpawns();
+        final World world = game.getWorld();
         for (final MapSpawn spawn : spawns) {
             if (spawn.playerUsingIt != null) {
                 GameCage.delete(world, spawn.x, spawn.y, spawn.z);

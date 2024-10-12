@@ -1,0 +1,54 @@
+spawn-location:
+  world: "world"
+  x: 46
+  y: 117
+  z: -62
+  yaw: 25
+  pitch: 0
+  
+vote-chest:
+  slot: 1
+  name: "&6Tipos de cofres"
+  type: "CHEST"
+  lore:
+    - ""
+    - "&fVota por los modos:"
+    - "&a&lBÁSICO&f, &e&lNORMAL &fy &c&lOP"
+    - ""
+
+kits:
+  slot: 0
+  name: "&eKits"
+  type: "BOW"
+  lore:
+    - ""
+    - "&fMira todos los kits"
+    - ""
+
+cages:
+  slot: 7
+  name: "&b&lCajas"
+  type: "BEACON"
+  lore:
+    - ""
+    - "&fSeleciona tu caja favorita"
+    - "&fSolo para &a&lVIP &fo superior"
+    - ""
+
+top:
+  slot: 8
+  name: "&bTops"
+  type: "BOOK"
+  lore: 
+    - ""
+    - "&fMira los tops"
+    - ""
+
+map-selector:
+  slot: 4
+  name: "&dSelector de mapas"
+  type: "COMPASS"
+  lore: 
+    - ""
+    - "&fJuega uno de los mapas"
+    - ""

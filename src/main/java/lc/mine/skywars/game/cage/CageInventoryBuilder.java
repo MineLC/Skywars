@@ -7,10 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import lc.mine.skywars.game.cage.CageInventory.Cage;
+import lc.mine.skywars.spawn.SpawnConfig;
 
 public class CageInventoryBuilder {
     
-    public Inventory buildInventories() {
+    public Inventory buildInventories(final SpawnConfig spawnConfig) {
 
         final Material[] availableCagesMaterials = new Material[] {
             Material.STONE,
@@ -121,7 +122,7 @@ public class CageInventoryBuilder {
 
             final Cage[] cages = new Cage[(remainItems > 45) ? 45 : remainItems];
 
-            final CageInventory previewPage = new CageInventory(inventoryIndex, cages);
+            final CageInventory previewPage = new CageInventory(inventoryIndex, spawnConfig, cages);
             final Inventory previewInventory = Bukkit.createInventory(previewPage, 54, "Seleciona tu caja");
 
             setItems(availableCagesMaterials, itemsIndex, endIndex, previewInventory, cages);

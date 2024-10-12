@@ -67,7 +67,7 @@
       <artifactId>core</artifactId>
       <version>1.0.0</version>
       <scope>system</scope>
-      <systemPath>${basedir}/dependencies/core.jar</systemPath>
+      <systemPath>${basedir}/dependencies/Core-0.0.2.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>lc.mine</groupId>

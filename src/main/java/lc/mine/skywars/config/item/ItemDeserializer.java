@@ -29,6 +29,15 @@ public class ItemDeserializer {
         return buildItem(section, mode);
     }
 
+    public InventoryItem buildInventoryItem(final ConfigSection section, final String mode) {
+        if (section == null) {
+            logger.warning("The item section " + mode + " is null. File: " + file);
+            return new InventoryItem(Material.STONE, new ItemStack(Material.STONE), 0);
+        }
+        final ItemStack item = buildItem(section, mode);
+        return new InventoryItem(item.getType(), item, section.getInt("slot"));
+    }
+
     public ItemStack buildItem(final ConfigSection section, final String mode) {
         final String name = section.getString("name");
         final List<String> lore = section.getStringList("lore");

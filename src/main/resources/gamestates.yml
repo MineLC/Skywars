@@ -25,5 +25,12 @@ ingame:
       volume: 1.0
       pitch: 1.0
 
+  worldborder:
+    start-in: 300 # In seconds
+    reduce: 0.1 # Blocks/second
+    limit-size: 10 # Minor worldborder size
+
+  max-game-duration: 1800
+
 endgame:
   spawn-fireworks: true

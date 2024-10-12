@@ -12,5 +12,12 @@ depends: [LCCore, SlimeWorldManager, LCCombat]
 commands:
   skywars:
     description: "Skywars command"
-  top:
-    description: "See skywars tops"
+  hentai:
+    description: "Yes"
+  leave:
+    description: "Leave from the game"
+  fly:
+    description: "Enable/Disable fly"
+  help:
+    aliases: ["ayuda"]
+    description: "Command for get help"

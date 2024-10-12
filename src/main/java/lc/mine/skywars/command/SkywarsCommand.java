@@ -1,5 +1,6 @@
 package lc.mine.skywars.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -35,8 +36,8 @@ public final class SkywarsCommand implements TabExecutor {
                         §ckits §7-> Only kits
                         §cchestrefill §7-> Only chestrefill
                         §cmessages §7-> Only messages
-                        §cmaps §7-> Only maps
                         §ctops §7-> Only tops config
+                        §cspawn §7-> Only spawn/pregame items
                         §cgamestates §7-> pregame, ingame and endgame
                         §cdatabase §7-> Only database
                 \n
@@ -49,7 +50,7 @@ public final class SkywarsCommand implements TabExecutor {
             return List.of("reload", "chest", "kits", "msg");
         }
         return (args.length == 2 && args[0].equalsIgnoreCase("reload"))
-            ? List.of("all", "config", "kits", "chestrefill", "messages", "maps", "states", "database", "tops")
+            ? getAvailableOptions()
             : List.of();
     }
 
@@ -67,13 +68,14 @@ public final class SkywarsCommand implements TabExecutor {
                 }
                 final String optionName = args[1].toUpperCase();
                 for (final LoadOption option : LoadOption.OPTIONS) {
-                    if (option.name().equals(optionName)) {
-                        plugin.reload(option);
-                        sender.sendMessage("§aPlugin reloaded. Option: " + option.name());    
-                        break;
+                    if (!option.name().equals(optionName)) {
+                        continue;
                     }
+                    plugin.reload(option);
+                    sender.sendMessage("§aPlugin reloaded. Option: " + option.name());    
+                    break;
                 }
-                sender.sendMessage("§cCan't found the load option: " + optionName + " Available options: §6" + LoadOption.OPTIONS);
+                sender.sendMessage("§cCan't found the load option: " + optionName + " Available options: §6" + getAvailableOptions());
                 break;
             case "msg":
                 if (args.length < 2) {
@@ -93,4 +95,13 @@ public final class SkywarsCommand implements TabExecutor {
         }
         return true;
     }
+
+    private List<String> getAvailableOptions() {
+        final List<String> options = new ArrayList<>(LoadOption.OPTIONS.length);
+        for (final LoadOption option : LoadOption.OPTIONS) {
+            options.add(option.name());
+        }
+        return options;
+    }
+
 }

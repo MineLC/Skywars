@@ -1,5 +1,21 @@
 game-full: "&cEl juego está lleno, vuelve a entrar luego"
 
+join-format: "&a%player% se ha unido"
+quit-format: "&c%player% ha salido"
+
+help-command:
+  - ""
+  - " &b&lSKYWARS &7- by MineLC"
+  - ""
+  - " &fUsa los items de tu inventario"
+  - " &fPara comprar kits o entrar al juego"
+  - ""
+  - " &fTu misión en skywars es ser el último vivo"
+  - ""
+  - " &9&lDISCORD:&9 http://mine.lc/discord"
+  - " &e&lTIENDA:&e http://mine.lc/tienda"
+  - ""
+
 join:
   - ""
   - "&6&l SKYWARS"
@@ -38,6 +54,15 @@ death:
   - " &fSin ningún problema"
   - ""
 
+worldborder:
+  - ""
+  - " &b&lWORLDBORDER"
+  - ""
+  - " &fSe empieza a achicar el mapa"
+  - " &fSi en 25 minutos no hay un ganador"
+  - " &fEl juego se detendrá automáticamente"
+  - ""
+
 selectChestMode: "&aHas selecionado el modo &e%mode%"
 selected-kit: "&aHas selecionado el kit &e%kit%"
 no-money: "&4&lERROR: &cNo tienes suficiente dinero"
@@ -49,3 +74,15 @@ already-buy: "&aClic para selecionar"
 need-buy: "&eCompralo por &6&l%cost% LCOINS"
 
 your-stats-top: "Tus estadísticas"
+cage-select: "&aHas selecionado la caja &e&l%name%"
+quit-need-be-in-game: "&cNecesitas estar en un juego para salir de este"
+
+fly:
+  need-permission: "&cNecesitas ser &a&lVIP &cpara volar en el lobby"
+  off: "&fModo de vuelo &c&lDESACTIVADO"
+  on: "&fModo de vuelo &a&lACTIVADO"
+
+map:
+  loading: "&cEl mapa se está cargando, espera un poco para entrar"
+  unloading: "&cEl mapa se está descargando, espera un poco para entrar"
+  cant-load: "&cHubo un error al cargar este mapa. Avisale a un administrador"

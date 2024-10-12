@@ -8,6 +8,7 @@ public enum LoadOption {
     MAPS,
     CHESTREFILL,
     GAMESTATES,
+    SPAWN,
     TOPS,
     DATABASE;
 

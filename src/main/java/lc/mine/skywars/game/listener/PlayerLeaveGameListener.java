@@ -1,5 +1,7 @@
 package lc.mine.skywars.game.listener;
 
+import java.util.List;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -15,6 +17,8 @@ import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.SkywarsGame;
 import lc.mine.skywars.map.MapSpawn;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class PlayerLeaveGameListener implements Listener {
 
@@ -37,15 +41,23 @@ public class PlayerLeaveGameListener implements Listener {
         }
         player.setGameMode(GameMode.SPECTATOR);
         Messages.send(player, "death");
-        final MapSpawn spawn = game.getMap().spawns()[0];
+        final MapSpawn spawn = game.getMap().getSpawns()[0];
 
         gameManager.tryFindWinner(game);
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> player.teleport(new Location(game.getMap().world(), spawn.x, spawn.y, spawn.z)), 2);
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> player.teleport(new Location(game.getWorld(), spawn.x, spawn.y, spawn.z)), 2);
     }
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+
+        final List<Player> playersInSpawn = event.getPlayer().getWorld().getPlayers();
+        final BaseComponent[] quitMessage = TextComponent.fromLegacyText(Messages.get("quit-format").replace("%player%", event.getPlayer().getName()));
+        for (final Player player : playersInSpawn) {
+            player.spigot().sendMessage(quitMessage);
+        }
+
         SkywarsDatabase.getDatabase().save(event.getPlayer());
-        gameManager.quit(event.getPlayer());
+        gameManager.quit(event.getPlayer(), true);
     }
 }

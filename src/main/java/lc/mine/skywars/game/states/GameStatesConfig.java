@@ -42,6 +42,12 @@ public final class GameStatesConfig {
         SkywarsSound chestRefillSound;
         int chestRefillTime = 120;
 
+        int maxGameDuration = 1800;
+
+        int worldborderStart = 300;
+        double worldborderReduce = 0.2;
+        int worldborderLimit = 10;
+
         public int getChestRefillTime() {
             return chestRefillTime;
         }
@@ -50,6 +56,18 @@ public final class GameStatesConfig {
         }
         public boolean isChestRefillMessage() {
             return chestRefillMessage;
+        }
+        public int getWorldborderLimit() {
+            return worldborderLimit;
+        }
+        public double getWorldborderReduce() {
+            return worldborderReduce;
+        }
+        public int getWorldborderStart() {
+            return worldborderStart;
+        }
+        public int getMaxGameDuration() {
+            return maxGameDuration;
         }
     }
 

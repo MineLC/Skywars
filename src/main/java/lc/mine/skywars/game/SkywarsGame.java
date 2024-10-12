@@ -2,6 +2,8 @@ package lc.mine.skywars.game;
 
 import java.util.Set;
 
+import org.bukkit.World;
+
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lc.mine.skywars.game.chestrefill.ChestMode;
@@ -16,7 +18,8 @@ public final class SkywarsGame {
     private final LongOpenHashSet chestsInCooldown;
     private ChestMode chestMode;
 
-    private int nextChestRefill, pregameCountdown;
+    private int nextChestRefill, pregameCountdown, ticks;
+    private World world;
 
     public SkywarsGame(SkywarsMap map) {
         this.map = map;
@@ -49,6 +52,16 @@ public final class SkywarsGame {
         this.pregameCountdown = pregameCountdown;
     }
 
+    public int getTicks() {
+        return ticks;
+    }
+    public void addTick() {
+        this.ticks++;
+    }
+    public void resetTicks() {
+        this.ticks = 0;
+    }
+
     public LongOpenHashSet getChestsInCooldown() {
         return chestsInCooldown;
     }
@@ -61,12 +74,13 @@ public final class SkywarsGame {
     }
 
     public void setState(GameState state) {
-        if (state == GameState.UNSTARTED) {
-            chestsInCooldown.clear();
-            players.clear();
-            map.resetSpawns();
-        }
         this.state = state;
+    }
+    public World getWorld() {
+        return world;
+    }
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public boolean hasStarted() {

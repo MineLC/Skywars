@@ -16,11 +16,10 @@ public final class GameTimer implements Runnable {
     private final InGameTimer inGameTimer;
     private final PregameTimer pregameTimer;
 
-
     public GameTimer(final GameManager gameManager, final TopManager topManager, final ConfigManager configManager) {
         this.gameManager = gameManager;
         this.endGameTimer = new EndGameTimer(configManager.getGameStatesConfig().getEndgameConfig());
-        this.inGameTimer = new InGameTimer(configManager.getGameStatesConfig().getInGameConfig());
+        this.inGameTimer = new InGameTimer(configManager.getGameStatesConfig().getInGameConfig(), gameManager);
         this.pregameTimer = new PregameTimer(topManager, configManager.getGameStatesConfig().getPregameConfig(), configManager.getKitsConfig(), configManager.getChestRefillConfig());
     }
 

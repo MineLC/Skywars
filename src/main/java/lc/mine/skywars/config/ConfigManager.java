@@ -22,8 +22,12 @@ import lc.mine.skywars.game.states.GameStatesConfig;
 import lc.mine.skywars.game.states.GameStatesConfigLoader;
 import lc.mine.skywars.game.top.TopConfig;
 import lc.mine.skywars.game.top.TopsConfigLoader;
-import lc.mine.skywars.map.SkywarsMap;
-import lc.mine.skywars.map.MapConfigLoader;
+import lc.mine.skywars.sidebar.GameSidebar;
+import lc.mine.skywars.sidebar.PregameSidebar;
+import lc.mine.skywars.sidebar.SidebarConfig;
+import lc.mine.skywars.sidebar.SpawnSidebar;
+import lc.mine.skywars.spawn.SpawnConfig;
+import lc.mine.skywars.spawn.SpawnConfigLoader;
 
 public class ConfigManager {
 
@@ -34,6 +38,8 @@ public class ConfigManager {
     private final KitConfig kitsConfig = new KitConfig();
     private final GameStatesConfig gameStatesConfig = new GameStatesConfig();
     private final TopConfig topConfig = new TopConfig();
+    private final SpawnConfig spawnConfig = new SpawnConfig();
+    private final SidebarConfig sidebarConfig = new SidebarConfig();
 
     private Yaml yaml;
 
@@ -78,6 +84,9 @@ public class ConfigManager {
                 case GAMESTATES:
                     loadGamesStates();
                     break;
+                case SPAWN:
+                    loadSpawn();
+                    break;
                 default:
                     break;
             }   
@@ -94,7 +103,9 @@ public class ConfigManager {
         loadKits(loadMainConfig());
         loadGamesStates();
         loadTopConfig();
-        cageInventory = new CageInventoryBuilder().buildInventories();
+        loadSidebars();
+        loadSpawn();
+        cageInventory = new CageInventoryBuilder().buildInventories(spawnConfig);
     }
 
     private void loadDatabase() {
@@ -106,9 +117,9 @@ public class ConfigManager {
         new MessageConfig().load(FileUtils.getConfig(yaml, "messages.yml"));
     }
     private void loadMaps(final SlimePlugin slimePlugin) {
-        final SkywarsMap map = new MapConfigLoader(logger).loadMap(yaml, plugin, slimePlugin);
-        plugin.getGameManager().setGames(map);
+        plugin.getGameManager().setGames(plugin.getMapManager().loadAllMaps(yaml, plugin));
     }
+
     private void loadKits(final ConfigSection mainConfig) {
         new KitConfigLoader(logger).load(plugin, yaml, mainConfig.getString("default-kit"), kitsConfig);
     }
@@ -123,6 +134,15 @@ public class ConfigManager {
     private void loadTopConfig() {
         FileUtils.createIfAbsent("tops.yml");
         new TopsConfigLoader(logger).load(FileUtils.getConfig(yaml, "tops.yml"), plugin.getCorePlugin(), topConfig);
+    }
+    private void loadSpawn() {
+        FileUtils.createIfAbsent("spawn.yml");
+        new SpawnConfigLoader(logger).load(FileUtils.getConfig(yaml, "spawn.yml"), spawnConfig);
+    }
+    private void loadSidebars() {
+        sidebarConfig.setGameSidebar(new GameSidebar());
+        sidebarConfig.setPregameSidebar(new PregameSidebar());
+        sidebarConfig.setSpawnSidebar(new SpawnSidebar(spawnConfig, plugin.getCorePlugin()));
     }
 
     private ConfigSection loadMainConfig() {
@@ -144,5 +164,11 @@ public class ConfigManager {
     }
     public TopConfig getTopConfig() {
         return topConfig;
+    }
+    public SpawnConfig getSpawnConfig() {
+        return spawnConfig;
+    }
+    public SidebarConfig getSidebarConfig() {
+        return sidebarConfig;
     }
 }

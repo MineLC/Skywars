@@ -46,5 +46,14 @@ public final class GameStatesConfigLoader {
         configToLoad.chestRefillSound = soundDeserializer.loadSound(chestRefill, "ingame.chestrefill");
         configToLoad.chestRefillTime = chestRefill.getOrDefault("waiting-time", 120);
         configToLoad.chestRefillMessage = chestRefill.getBoolean("enable-message");
+   
+        final ConfigSection worldborder = ingame.getSection("worldborder");
+        if (worldborder == null) {
+            logger.warning("Can't found the worldborder section in ingame. File: gamestates.yml");
+            return;
+        }
+        configToLoad.worldborderLimit = worldborder.getInt("limit-size");
+        configToLoad.worldborderReduce = worldborder.getDouble("reduce");
+        configToLoad.worldborderStart = worldborder.getInt("start-in");
     }
 }
