@@ -35,6 +35,7 @@ public class SpawnConfig {
     public void sendPregameItems(final Player player) {
         final PlayerInventory inventory = player.getInventory(); 
         inventory.clear();
+        inventory.setArmorContents(null);
         inventory.setItem(kitSelectorItem.slot(), kitSelectorItem.item());
         inventory.setItem(topsItem.slot(), topsItem.item());
         inventory.setItem(cagesSelectorItem.slot(), cagesSelectorItem.item());
@@ -57,6 +58,7 @@ public class SpawnConfig {
     public void giveSpawnItems(final Player player) {
         final PlayerInventory inventory = player.getInventory();
         inventory.clear();
+        inventory.setArmorContents(null);
         inventory.setItem(kitSelectorItem.slot(), kitSelectorItem.item());
         inventory.setItem(mapSelectorItem.slot(), mapSelectorItem.item());
         inventory.setItem(topsItem.slot(), topsItem.item());

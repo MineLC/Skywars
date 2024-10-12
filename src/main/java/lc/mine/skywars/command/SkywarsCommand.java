@@ -73,7 +73,7 @@ public final class SkywarsCommand implements TabExecutor {
                     }
                     plugin.reload(option);
                     sender.sendMessage("§aPlugin reloaded. Option: " + option.name());    
-                    break;
+                    return true;
                 }
                 sender.sendMessage("§cCan't found the load option: " + optionName + " Available options: §6" + getAvailableOptions());
                 break;

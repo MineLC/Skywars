@@ -88,7 +88,7 @@ public final class GameManager {
         }
         final SkywarsGame game = playerInGame.getGame();
         game.getPlayers().remove(playerInGame);
-
+        
         if (game.getPlayers().isEmpty()) {
             resetGame(game);
             return;
@@ -141,7 +141,11 @@ public final class GameManager {
 
     public void endGame(final SkywarsGame game) {
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            if (game.getState() == GameState.UNSTARTED) {
+                return;
+            }
             for (final PlayerInGame playerInGame : game.getPlayers()) {
+                playersInGame.remove(playerInGame.getPlayer().getUniqueId());
                 plugin.getConfigManager().getSpawnConfig().sendToSpawn(playerInGame.getPlayer(), plugin.getConfigManager().getSidebarConfig().getSpawnSidebar());
             }
             resetGame(game);
@@ -164,6 +168,7 @@ public final class GameManager {
         if (this.games != null) {
             for (final SkywarsGame game : games) {
                 for (final PlayerInGame playerInGame : game.getPlayers()) {
+                    playersInGame.remove(playerInGame.getPlayer().getUniqueId());
                     plugin.getConfigManager().getSpawnConfig().sendToSpawn(playerInGame.getPlayer(), plugin.getConfigManager().getSidebarConfig().getSpawnSidebar());
                 }
                 resetGame(game);
