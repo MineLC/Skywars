@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import io.github.ichocomilk.lightsidebar.Sidebar;
 import io.github.ichocomilk.lightsidebar.nms.v1_8R3.Sidebar1_8R3;
-import lc.mine.skywars.database.SkywarsDatabase;
 import lc.mine.skywars.game.PlayerInGame;
 import lc.mine.skywars.game.SkywarsGame;
 import lc.mine.skywars.utils.TimeUtil;
@@ -57,7 +56,6 @@ public final class GameSidebar {
             "",
             "§fRefill: §e" + TimeUtil.getMinutesAndSeconds(game.getNextChestRefill()),
             "",
-            "§fAsesinatos: §c" + SkywarsDatabase.getDatabase().getCached(player.getUniqueId()).kills,
             "§fJugadores: §a" + amountPlayerLiving,
             "",
             "§fMapa: " + game.getMap().getDisplayName(),
