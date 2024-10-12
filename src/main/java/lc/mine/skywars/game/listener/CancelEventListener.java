@@ -8,24 +8,35 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 import lc.mine.skywars.game.GameManager;
 import lc.mine.skywars.game.SkywarsGame;
 import lc.mine.skywars.game.states.GameState;
+import lc.mine.skywars.spawn.SpawnConfig;
 
 public class CancelEventListener implements Listener {
 
     private final GameManager gameManager;
+    private final SpawnConfig spawnConfig;
 
-    public CancelEventListener(GameManager gameManager) {
+    public CancelEventListener(GameManager gameManager, SpawnConfig spawnConfig) {
         this.gameManager = gameManager;
+        this.spawnConfig = spawnConfig;
     }
 
     @EventHandler
     public void breakBlock(final BlockBreakEvent event) {
         final SkywarsGame game = gameManager.getGame(event.getPlayer());
         if (game == null || game.getState() == GameState.PREGAME) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerHunger(final FoodLevelChangeEvent event) {
+        if (event.getEntity().getWorld().equals(spawnConfig.getSpawn().getWorld())) {
             event.setCancelled(true);
         }
     }

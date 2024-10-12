@@ -67,7 +67,7 @@ selectChestMode: "&aHas selecionado el modo &e%mode%"
 selected-kit: "&aHas selecionado el kit &e%kit%"
 no-money: "&4&lERROR: &cNo tienes suficiente dinero"
 
-win-title: "&&lGanador"
+win-title: "&a&lGanador"
 win-subtitle: "&aHas ganado la partida"
 
 already-buy: "&aClic para selecionar"
@@ -76,7 +76,7 @@ need-buy: "&eCompralo por &6&l%cost% LCOINS"
 your-stats-top: "Tus estadísticas"
 cage-select: "&aHas selecionado la caja &e&l%name%"
 quit-need-be-in-game: "&cNecesitas estar en un juego para salir de este"
-
+game-finish: "&cNo puedes entrar a un juego que ya acabo"
 fly:
   need-permission: "&cNecesitas ser &a&lVIP &cpara volar en el lobby"
   off: "&fModo de vuelo &c&lDESACTIVADO"

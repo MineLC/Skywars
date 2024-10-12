@@ -52,6 +52,10 @@ public final class GameManager {
             playersTryingToJoinInGame.add(uuid);
             return;
         }
+        if (game.getState() == GameState.FINISH) {
+            Messages.send(player, "game-finish");
+            return;
+        }
 
         playersTryingToJoinInGame.remove(uuid);
         final PlayerInGame playerInGame = new PlayerInGame(game, player);

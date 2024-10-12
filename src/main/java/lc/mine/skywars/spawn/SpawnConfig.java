@@ -46,6 +46,7 @@ public class SpawnConfig {
         if (player.hasPermission("vip")) {
             player.setAllowFlight(true);
         }
+        player.setFoodLevel(20);
         player.setHealth(20);
         player.setGameMode(GameMode.SURVIVAL);
         player.teleport(spawn);
