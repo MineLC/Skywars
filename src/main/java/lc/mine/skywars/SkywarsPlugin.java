@@ -2,6 +2,7 @@ package lc.mine.skywars;
 
 import java.util.concurrent.Executors;
 
+import lc.mine.skywars.game.kit.KitAdder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,6 +59,7 @@ public final class SkywarsPlugin extends JavaPlugin {
 
         topManager.load();
         configManager.load(slimePlugin, LoadOption.ALL);
+        KitAdder.setConfigManager(configManager);
 
         getCommand("skywars").setExecutor(new SkywarsCommand(this));
         getCommand("fly").setExecutor(new FlyCommand());
