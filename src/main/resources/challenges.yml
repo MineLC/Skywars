@@ -2,7 +2,7 @@ uhc:
   name: UHC
   coinsXKill: 10
   slot: 3
-  on:
+  enabled:
     type: "GOLDEN_APPLE"
     name: "&eUHC"
     lore:
@@ -16,7 +16,7 @@ uhc:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "GOLDEN_APPLE"
     name: "&eUHC"
     lore:
@@ -34,7 +34,7 @@ noob:
   name: Noob
   coinsXKill: 15
   slot: 32
-  on:
+  enabled:
     type: "STONE_SWORD"
     name: "&cNoob"
     lore:
@@ -47,7 +47,7 @@ noob:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "STONE_SWORD"
     name: "&cNoob"
     lore:
@@ -64,7 +64,7 @@ archer:
   name: Arquero
   coinsXKill: 10
   slot: 5
-  on:
+  enabled:
     type: "BOW"
     name: "&6Arquero"
     lore:
@@ -77,7 +77,7 @@ archer:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "BOW"
     name: "&6Arquero"
     lore:
@@ -94,7 +94,7 @@ middle-life:
   name: "Media Vida"
   coinsXKill: 15
   slot: 7
-  on:
+  enabled:
     type: "APPLE"
     name: "&4Media Vida"
     lore:
@@ -107,7 +107,7 @@ middle-life:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "APPLE"
     name: "&4Media Vida"
     lore:
@@ -124,7 +124,7 @@ without-chests:
   name: "Sin cofres"
   coinsXKill: 10
   slot: 3
-  on:
+  enabled:
     type: "CHEST"
     name: "&eSin cofres"
     lore:
@@ -137,7 +137,7 @@ without-chests:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "CHEST"
     name: "&eSin cofres"
     lore:
@@ -154,7 +154,7 @@ without-blocks:
   name: "Sin colocar bloques"
   coinsXKill: 15
   slot: 30
-  on:
+  enabled:
     type: "STONE"
     name: "&eSin colocar bloques"
     lore:
@@ -167,7 +167,7 @@ without-blocks:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "STONE"
     name: "&eSin colocar bloques"
     lore:
@@ -184,7 +184,7 @@ definitive-warrior:
   name: "Guerrero Definitivo"
   coinsXKill: 17
   slot: 28
-  on:
+  enabled:
     type: "IRON_HELMET"
     name: "&aGuerrero Definitivo"
     lore:
@@ -197,7 +197,7 @@ definitive-warrior:
       - "&fEstado: &aActivado"
       - ""
       - "&eClic para desactivar desafio"
-  off:
+  disabled:
     type: "IRON_HELMET"
     name: "&aGuerrero Definitivo"
     lore:

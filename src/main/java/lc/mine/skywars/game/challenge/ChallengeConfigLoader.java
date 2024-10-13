@@ -15,66 +15,67 @@ public class ChallengeConfigLoader {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public void load(final ConfigSection topConfig, final ChallengeConfig configToLoad) {
+    public void load(final ConfigSection challengeConfig, final ChallengeConfig cenabledfigToLoad) {
         final ItemDeserializer itemDeserializer = new ItemDeserializer(logger, "challenges.yml");
 
-        final ConfigSection uhcSection = topConfig.getSection("uhc");
-        final ConfigSection definitiveWarriorSection = topConfig.getSection("definitive-warrior");
-        final ConfigSection withoutBlocksSection = topConfig.getSection("without-blocks");
-        final ConfigSection withoutChestsSection = topConfig.getSection("without-chests");
-        final ConfigSection archerSection = topConfig.getSection("archer");
-        final ConfigSection middleLifeSection = topConfig.getSection("middle-life");
-        final ConfigSection noobSection = topConfig.getSection("noob");
+        final ConfigSection uhcSectienabled = challengeConfig.getSection("uhc");
+        final ConfigSection definitiveWarriorSectienabled = challengeConfig.getSection("definitive-warrior");
+        final ConfigSection withoutBlocksSectienabled = challengeConfig.getSection("without-blocks");
+        final ConfigSection withoutChestsSectienabled = challengeConfig.getSection("without-chests");
+        final ConfigSection archerSectienabled = challengeConfig.getSection("archer");
+        final ConfigSection middleLifeSectienabled = challengeConfig.getSection("middle-life");
+        final ConfigSection noobSectienabled = challengeConfig.getSection("noob");
 
+        logger.info("UCH " + uhcSectienabled.values().toString());
         // UCH
-        configToLoad.uhc.inventorySlot = uhcSection.getInt("slot");
-        configToLoad.uhc.name = uhcSection.getString("name");
-        configToLoad.uhc.coinsXKill = uhcSection.getInt("coinsXKill");
-        configToLoad.uhc.onItemInventory = itemDeserializer.buildSafeItem(uhcSection.getSection("on"), "on");
-        configToLoad.uhc.offItemInventory = itemDeserializer.buildSafeItem(uhcSection.getSection("off"), "off");
+        cenabledfigToLoad.uhc.inventorySlot = uhcSectienabled.getInt("slot");
+        cenabledfigToLoad.uhc.name = uhcSectienabled.getString("name");
+        cenabledfigToLoad.uhc.coinsXKill = uhcSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.uhc.onItemInventory = itemDeserializer.buildSafeItem(uhcSectienabled.getSection("enabled"), "uch.enabled");
+        cenabledfigToLoad.uhc.offItemInventory = itemDeserializer.buildSafeItem(uhcSectienabled.getSection("disabled"), "uch.disabled");
 
         // DEFINITE WARRIOR
-        configToLoad.definitiveWarrior.inventorySlot = definitiveWarriorSection.getInt("slot");
-        configToLoad.definitiveWarrior.name = definitiveWarriorSection.getString("name");
-        configToLoad.definitiveWarrior.onItemInventory = itemDeserializer.buildSafeItem(definitiveWarriorSection.getSection("on"), "on");
-        configToLoad.definitiveWarrior.coinsXKill = definitiveWarriorSection.getInt("coinsXKill");
-        configToLoad.definitiveWarrior.offItemInventory = itemDeserializer.buildSafeItem(definitiveWarriorSection.getSection("off"), "off");
+        cenabledfigToLoad.definitiveWarrior.inventorySlot = definitiveWarriorSectienabled.getInt("slot");
+        cenabledfigToLoad.definitiveWarrior.name = definitiveWarriorSectienabled.getString("name");
+        cenabledfigToLoad.definitiveWarrior.onItemInventory = itemDeserializer.buildSafeItem(definitiveWarriorSectienabled.getSection("enabled"), "definitive-warrior.enabled");
+        cenabledfigToLoad.definitiveWarrior.coinsXKill = definitiveWarriorSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.definitiveWarrior.offItemInventory = itemDeserializer.buildSafeItem(definitiveWarriorSectienabled.getSection("disabled"), "definitive-warrior.disabled");
 
         // WITHOUT BLOCKS
-        configToLoad.withoutBlocks.inventorySlot = withoutBlocksSection.getInt("slot");
-        configToLoad.withoutBlocks.name = withoutBlocksSection.getString("name");
-        configToLoad.withoutBlocks.coinsXKill = withoutBlocksSection.getInt("coinsXKill");
-        configToLoad.withoutBlocks.onItemInventory = itemDeserializer.buildSafeItem(withoutBlocksSection.getSection("on"), "on");
-        configToLoad.withoutBlocks.offItemInventory = itemDeserializer.buildSafeItem(withoutBlocksSection.getSection("off"), "off");
+        cenabledfigToLoad.withoutBlocks.inventorySlot = withoutBlocksSectienabled.getInt("slot");
+        cenabledfigToLoad.withoutBlocks.name = withoutBlocksSectienabled.getString("name");
+        cenabledfigToLoad.withoutBlocks.coinsXKill = withoutBlocksSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.withoutBlocks.onItemInventory = itemDeserializer.buildSafeItem(withoutBlocksSectienabled.getSection("enabled"), "without-blocks.enabled");
+        cenabledfigToLoad.withoutBlocks.offItemInventory = itemDeserializer.buildSafeItem(withoutBlocksSectienabled.getSection("disabled"), "without-blocks.disabled");
 
         // WITHOUT CHESTS
-        configToLoad.withoutChests.inventorySlot = withoutChestsSection.getInt("slot");
-        configToLoad.withoutChests.onItemInventory = itemDeserializer.buildSafeItem(withoutChestsSection.getSection("on"), "on");
-        configToLoad.withoutChests.coinsXKill = withoutChestsSection.getInt("coinsXKill");
-        configToLoad.withoutChests.name = withoutChestsSection.getString("name");
-        configToLoad.withoutChests.offItemInventory = itemDeserializer.buildSafeItem(withoutChestsSection.getSection("off"), "off");
+        cenabledfigToLoad.withoutChests.inventorySlot = withoutChestsSectienabled.getInt("slot");
+        cenabledfigToLoad.withoutChests.onItemInventory = itemDeserializer.buildSafeItem(withoutChestsSectienabled.getSection("enabled"), "without-chests.enabled");
+        cenabledfigToLoad.withoutChests.coinsXKill = withoutChestsSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.withoutChests.name = withoutChestsSectienabled.getString("name");
+        cenabledfigToLoad.withoutChests.offItemInventory = itemDeserializer.buildSafeItem(withoutChestsSectienabled.getSection("disabled"), "without-chests.disabled");
 
         // ARCHER
-        configToLoad.archer.inventorySlot = archerSection.getInt("slot");
-        configToLoad.archer.coinsXKill = archerSection.getInt("coinsXKill");
-        configToLoad.archer.name = archerSection.getString("name");
-        configToLoad.archer.onItemInventory = itemDeserializer.buildSafeItem(archerSection.getSection("on"), "on");
-        configToLoad.archer.offItemInventory = itemDeserializer.buildSafeItem(archerSection.getSection("off"), "off");
+        cenabledfigToLoad.archer.inventorySlot = archerSectienabled.getInt("slot");
+        cenabledfigToLoad.archer.coinsXKill = archerSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.archer.name = archerSectienabled.getString("name");
+        cenabledfigToLoad.archer.onItemInventory = itemDeserializer.buildSafeItem(archerSectienabled.getSection("enabled"), "archer.enabled");
+        cenabledfigToLoad.archer.offItemInventory = itemDeserializer.buildSafeItem(archerSectienabled.getSection("disabled"), "archer.disabled");
 
         // MIDDLE LIFE
-        configToLoad.middleLife.inventorySlot = middleLifeSection.getInt("slot");
-        configToLoad.middleLife.name = middleLifeSection.getString("name");
-        configToLoad.middleLife.coinsXKill = middleLifeSection.getInt("coinsXKill");
-        configToLoad.middleLife.onItemInventory = itemDeserializer.buildSafeItem(middleLifeSection.getSection("on"), "on");
-        configToLoad.middleLife.offItemInventory = itemDeserializer.buildSafeItem(middleLifeSection.getSection("off"), "off");
+        cenabledfigToLoad.middleLife.inventorySlot = middleLifeSectienabled.getInt("slot");
+        cenabledfigToLoad.middleLife.name = middleLifeSectienabled.getString("name");
+        cenabledfigToLoad.middleLife.coinsXKill = middleLifeSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.middleLife.onItemInventory = itemDeserializer.buildSafeItem(middleLifeSectienabled.getSection("enabled"), "middle-life.enabled");
+        cenabledfigToLoad.middleLife.offItemInventory = itemDeserializer.buildSafeItem(middleLifeSectienabled.getSection("disabled"), "middle-life.disabled");
 
         // NOOB
-        configToLoad.noob.inventorySlot = noobSection.getInt("slot");
-        configToLoad.noob.onItemInventory = itemDeserializer.buildSafeItem(noobSection.getSection("on"), "on");
-        configToLoad.noob.name = noobSection.getString("name");
-        configToLoad.noob.coinsXKill = noobSection.getInt("coinsXKill");
-        configToLoad.noob.offItemInventory = itemDeserializer.buildSafeItem(noobSection.getSection("off"), "off");
+        cenabledfigToLoad.noob.inventorySlot = noobSectienabled.getInt("slot");
+        cenabledfigToLoad.noob.onItemInventory = itemDeserializer.buildSafeItem(noobSectienabled.getSection("enabled"), "noob.enabled");
+        cenabledfigToLoad.noob.name = noobSectienabled.getString("name");
+        cenabledfigToLoad.noob.coinsXKill = noobSectienabled.getInt("coinsXKill");
+        cenabledfigToLoad.noob.offItemInventory = itemDeserializer.buildSafeItem(noobSectienabled.getSection("disabled"), "noob.disabled");
 
-        configToLoad.challengeInventoryBuilder = new ChallengeInventoryBuilder(configToLoad);
+        cenabledfigToLoad.challengeInventoryBuilder = new ChallengeInventoryBuilder(cenabledfigToLoad);
     }
 }
