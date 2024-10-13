@@ -31,7 +31,7 @@ public final class GameSidebar {
             if (playerInGame.getPlayer().getGameMode() == GameMode.SPECTATOR) {
                 sidebar.setLines(spectatorSidebar);
             } else {
-                sidebar.setLines(getSurvivorSidebar(sidebar, game, playerInGame.getPlayer(), amountPlayerLiving));
+                sidebar.setLines(getSurvivorSidebar(sidebar, game, playerInGame, amountPlayerLiving));
             }
             sidebar.sendLines(playerInGame.getPlayer());
             sidebar.sendTitle(playerInGame.getPlayer());
@@ -51,12 +51,13 @@ public final class GameSidebar {
         });
     }
 
-    private Object[] getSurvivorSidebar(final Sidebar sidebar, final SkywarsGame game, final Player player, final int amountPlayerLiving) {
+    private Object[] getSurvivorSidebar(final Sidebar sidebar, final SkywarsGame game, final PlayerInGame playerInGame, final int amountPlayerLiving) {
         return sidebar.createLines(new String[]{
             "",
             "§fRefill: §e" + TimeUtil.getMinutesAndSeconds(game.getNextChestRefill()),
             "",
             "§fJugadores: §a" + amountPlayerLiving,
+            "§fAsesinatos: §c" + playerInGame.getKills(),
             "",
             "§fMapa: " + game.getMap().getDisplayName(),
             "",

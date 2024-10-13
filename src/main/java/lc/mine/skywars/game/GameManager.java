@@ -4,9 +4,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import lc.mine.core.CorePlugin;
 import lc.mine.core.database.PlayerData;
 import lc.mine.skywars.game.challenge.ChallengeConfig;
+
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -45,6 +46,10 @@ public final class GameManager {
         this.topManager = topManager;
     }
 
+    public boolean canJoin(final Player player) {
+        return playersTryingToJoinInGame.contains(player.getUniqueId());
+    }
+
     public void join(final Player player, final SkywarsGame game) {
         final UUID uuid = player.getUniqueId();
         if (playersTryingToJoinInGame.contains(uuid) || !plugin.getMapManager().canJoin(game.getMap(), player)) {
@@ -64,6 +69,13 @@ public final class GameManager {
         final PlayerInGame playerInGame = new PlayerInGame(game, player);
         game.getPlayers().add(playerInGame);
         playersInGame.put(uuid, playerInGame);
+
+        if (game.getState() == GameState.IN_GAME) {
+            player.setGameMode(GameMode.SPECTATOR);
+            final MapSpawn firstSpawn = game.getMap().getSpawns()[0];
+            player.teleport(new Location(game.getWorld(), firstSpawn.x, firstSpawn.y, firstSpawn.z));
+            return;
+        }
 
         player.setAllowFlight(false);
         plugin.getConfigManager().getSpawnConfig().sendPregameItems(player);
@@ -145,7 +157,6 @@ public final class GameManager {
         if(money > 0){
             PlayerData playerData = plugin.getCorePlugin().getData().getCached(lastPlayerLive.getUniqueId());
             playerData.setLcoins(playerData.getLcoins()+money);
-            plugin.getCorePlugin().getData().save(lastPlayerLive);
         }
 
         game.setState(GameState.FINISH);

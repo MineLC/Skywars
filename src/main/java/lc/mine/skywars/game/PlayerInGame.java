@@ -22,10 +22,6 @@ public class PlayerInGame {
         kills++;
     }
 
-    public void clearKills(){
-        kills = 0;
-    }
-
     public boolean isAlive() {
         return player.getGameMode() != GameMode.SPECTATOR;
     }

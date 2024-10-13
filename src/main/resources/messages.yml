@@ -86,6 +86,8 @@ your-stats-top: "Tus estadísticas"
 cage-select: "&aHas selecionado la caja &e&l%name%"
 quit-need-be-in-game: "&cNecesitas estar en un juego para salir de este"
 game-finish: "&cNo puedes entrar a un juego que ya acabo"
+all-maps-are-used: "&cTodos los mapas están usados, espera un poco"
+
 fly:
   need-permission: "&cNecesitas ser &a&lVIP &cpara volar en el lobby"
   off: "&fModo de vuelo &c&lDESACTIVADO"
