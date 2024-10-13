@@ -81,6 +81,8 @@ public final class GameManager {
     }
 
     public void quit(final Player player, final boolean leaveFromServer) {
+        User user = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
+        user.activeChallenges.clear();
         if (!leaveFromServer) {
             plugin.getConfigManager().getSpawnConfig().sendToSpawn(player, plugin.getConfigManager().getSidebarConfig().getSpawnSidebar());
         }
@@ -128,7 +130,6 @@ public final class GameManager {
                 }
                 alivePlayers++;
                 lastPlayerLive = otherPlayer.getPlayer();
-                continue;
             }
         }
 
@@ -137,6 +138,7 @@ public final class GameManager {
 
         final User winnerData = SkywarsDatabase.getDatabase().getCached(lastPlayerLive.getUniqueId());
         winnerData.wins++;
+        winnerData.activeChallenges.clear();
         topManager.calculateWins(winnerData, lastPlayerLive.getName());
 
         lastPlayerLive.sendTitle(Messages.get("win-title"), Messages.get("win-subtitle"));

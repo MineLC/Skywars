@@ -97,11 +97,15 @@ final class PregameTimer {
     }
 
     private void startForPlayer(final Player player, final int[] chestVotes) {
-        player.setNoDamageTicks(5*20);
 
         final User data = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
         data.played++;
-        topManager.calculatePlayed(data, player.getName());    
+        if(data.activeChallenges.contains(configManager.getChallengeConfig().getMiddleLife())){
+            player.setMaxHealth(10.0);
+            player.setHealth(10.0);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lAVISO ! &fHas comenzado el desafio de media vida (5 corazones)"));
+        }
+        topManager.calculatePlayed(data, player.getName());
     
         if (data.chestRefillVoteIndex != -1) {
             chestVotes[data.chestRefillVoteIndex]++;
@@ -113,13 +117,8 @@ final class PregameTimer {
             return;
         }
         KitAdder.add(player, data.selectedKit);
-        final User user = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
 
-        if(user.activeChallenges.contains(configManager.getChallengeConfig().getMiddleLife())){
-            player.setMaxHealth(10.0);
-            player.setHealth(10.0);
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lAVISO ! &fHas comenzado el desafio de media vida (5 corazones)"));
-        }
+        player.setNoDamageTicks(5*20);
     }
 
     private ChestMode getModeWithMoreVotes(final ChestMode[] modes, final int[] votes) {

@@ -38,6 +38,7 @@ public class PlayerLeaveGameListener implements Listener {
         }
         final User user = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
         player.setMaxHealth(20.0);
+        user.activeChallenges.clear();
         player.setHealth(20.0);
         final SkywarsGame game = gameManager.getGame(player);
         if (game == null) {
@@ -48,7 +49,6 @@ public class PlayerLeaveGameListener implements Listener {
         final MapSpawn spawn = game.getMap().getSpawns()[0];
 
         gameManager.tryFindWinner(game);
-        user.activeChallenges.clear();
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> player.teleport(new Location(game.getWorld(), spawn.x, spawn.y, spawn.z)), 2);
     }
 
@@ -56,7 +56,6 @@ public class PlayerLeaveGameListener implements Listener {
     public void onPlayerQuit(final PlayerQuitEvent event) {
         event.setQuitMessage(null);
         final User user = SkywarsDatabase.getDatabase().getCached(event.getPlayer().getUniqueId());
-        user.activeChallenges.clear();
         event.getPlayer().setMaxHealth(20.0);
         final List<Player> playersInSpawn = event.getPlayer().getWorld().getPlayers();
         final BaseComponent[] quitMessage = TextComponent.fromLegacyText(Messages.get("quit-format").replace("%player%", event.getPlayer().getName()));
