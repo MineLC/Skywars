@@ -1,7 +1,17 @@
+on-item:
+  type: DYE
+  data: 2
+  name: "&aActivado"
+
+off-item:
+  type: DYE
+  data: 8
+  name: "&cDesactivado"
+
 uhc:
   name: UHC
   coinsXKill: 10
-  slot: 3
+  slot: 1
   enabled:
     type: "GOLDEN_APPLE"
     name: "&eUHC"

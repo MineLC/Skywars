@@ -13,6 +13,8 @@ public class ChallengeConfig {
     ChallengeSelector archer = new ChallengeSelector();
     ChallengeSelector definitiveWarrior = new ChallengeSelector();
     ChallengeSelector withoutChests = new ChallengeSelector();
+    
+    ItemStack offItem, onItem;
 
     public ChallengeInventoryBuilder getChallengeInventoryBuilder() {
         return challengeInventoryBuilder;
@@ -100,5 +102,11 @@ public class ChallengeConfig {
 
     public void setWithoutChests(ChallengeSelector withoutChests) {
         this.withoutChests = withoutChests;
+    }
+    public ItemStack getOffItem() {
+        return offItem;
+    }
+    public ItemStack getOnItem() {
+        return onItem;
     }
 }
