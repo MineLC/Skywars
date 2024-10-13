@@ -52,6 +52,7 @@ win-challenges:
   - ""
   - " &fEl jugador &a%winner% &aha &a&lGANADO"
   - " &fPortando los desafios: %challenges%"
+  - " &fGanando un extra de &e%coins% LCoins"
   - ""
 
 

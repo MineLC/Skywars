@@ -7,6 +7,7 @@ import java.util.UUID;
 import lc.mine.core.database.PlayerData;
 import lc.mine.skywars.game.challenge.ChallengeConfig;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -171,11 +172,11 @@ public final class GameManager {
             StringBuilder challenges = new StringBuilder();
 
             for(ChallengeConfig.ChallengeSelector c : winnerData.activeChallenges){
-                if(challenges.isEmpty()) challenges.append("&4").append(c.getName());
-                else challenges.append("&f, &4").append(c.getName());
+                if(challenges.isEmpty()) challenges.append(ChatColor.COLOR_CHAR+"4").append(c.getName());
+                else challenges.append(ChatColor.COLOR_CHAR+"f, "+ChatColor.COLOR_CHAR+"4").append(c.getName());
             }
 
-            Messages.sendNoGet(game.getPlayers(), Messages.get("win-challenges").replace("%winner%", lastPlayerLive.getName()).replace("%challenges%", challenges));
+            Messages.sendNoGet(game.getPlayers(), Messages.get("win-challenges").replace("%coins%", String.valueOf(money)).replace("%winner%", lastPlayerLive.getName()).replace("%challenges%", challenges));
 
         }
         winnerData.activeChallenges.clear();
