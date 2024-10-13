@@ -59,6 +59,7 @@ public final class PressurePlateListener implements Listener {
             gameManager.join(player, emptyGame);
             return;
         }
+        player.setVelocity(player.getVelocity().setY(3.0));
         Messages.send(player, "all-maps-are-used");
     }
 }
