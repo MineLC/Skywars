@@ -7,10 +7,23 @@ public class PlayerInGame {
 
     private final SkywarsGame game;
     private final Player player;
+    private int kills = 0;
 
     public PlayerInGame(SkywarsGame game, Player player) {
         this.game = game;
         this.player = player;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void addKill(){
+        kills++;
+    }
+
+    public void clearKills(){
+        kills = 0;
     }
 
     public boolean isAlive() {

@@ -46,6 +46,15 @@ win:
   - " &fEl jugador &a%winner% &aha &a&lGANADO"
   - ""
 
+win-challenges:
+  - ""
+  - " &6&lFIN DE LA PARTIDA"
+  - ""
+  - " &fEl jugador &a%winner% &aha &a&lGANADO"
+  - " &fPortando los desafios: %challenges%"
+  - ""
+
+
 death:
   - ""
   - " &c&lHAS MUERTO"

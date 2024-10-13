@@ -55,7 +55,6 @@ public class PlayerLeaveGameListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         event.setQuitMessage(null);
-        final User user = SkywarsDatabase.getDatabase().getCached(event.getPlayer().getUniqueId());
         event.getPlayer().setMaxHealth(20.0);
         final List<Player> playersInSpawn = event.getPlayer().getWorld().getPlayers();
         final BaseComponent[] quitMessage = TextComponent.fromLegacyText(Messages.get("quit-format").replace("%player%", event.getPlayer().getName()));

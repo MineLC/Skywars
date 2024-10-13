@@ -1,5 +1,6 @@
 package lc.mine.skywars.game.listener;
 
+import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.config.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,10 +26,12 @@ public final class PlayerCombatLogListener implements Listener {
     private final GameManager gameManager;
     private final TopManager topManager;
     private final ConfigManager configManager;
-    public PlayerCombatLogListener(GameManager gameManager, TopManager topManager, ConfigManager configManager) {
+    private final SkywarsPlugin plugin;
+    public PlayerCombatLogListener(GameManager gameManager, TopManager topManager, ConfigManager configManager, SkywarsPlugin plugin) {
         this.topManager = topManager;
         this.gameManager = gameManager;
         this.configManager = configManager;
+        this.plugin = plugin;
     }
 
     @EventHandler
@@ -43,9 +46,11 @@ public final class PlayerCombatLogListener implements Listener {
         topManager.calculateDeaths(victimData, event.getVictim().getName());
         if (event.getKiller() != null) {
             final User killerData = SkywarsDatabase.getDatabase().getCached(event.getKiller().getUniqueId());
+            plugin.getGameManager().playersInGame.get(killerData.uuid).addKill();
             killerData.kills++;
             topManager.calculateKills(killerData, event.getKiller().getName());
         }
+
 
         Messages.sendNoGet(game.getPlayers(), event.getDeathMessage());
         event.setCancelDeathMessage(true);

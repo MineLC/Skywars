@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import lc.mine.core.CorePlugin;
+import lc.mine.core.database.PlayerData;
+import lc.mine.skywars.game.challenge.ChallengeConfig;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -24,7 +27,7 @@ import lc.mine.skywars.map.SkywarsMap;
 
 public final class GameManager {
 
-    private final Map<UUID, PlayerInGame> playersInGame = new Object2ObjectOpenHashMap<>();
+    public final Map<UUID, PlayerInGame> playersInGame = new Object2ObjectOpenHashMap<>();
 
     private final Set<UUID> playersTryingToJoinInGame = new ObjectOpenHashSet<>();
 
@@ -81,8 +84,6 @@ public final class GameManager {
     }
 
     public void quit(final Player player, final boolean leaveFromServer) {
-        User user = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
-        user.activeChallenges.clear();
         if (!leaveFromServer) {
             plugin.getConfigManager().getSpawnConfig().sendToSpawn(player, plugin.getConfigManager().getSidebarConfig().getSpawnSidebar());
         }
@@ -133,16 +134,41 @@ public final class GameManager {
             }
         }
 
+        final User winnerData = SkywarsDatabase.getDatabase().getCached(lastPlayerLive.getUniqueId());
+        winnerData.wins++;
+        topManager.calculateWins(winnerData, lastPlayerLive.getName());
+
+        double money = 0.0;
+        for(ChallengeConfig.ChallengeSelector c : winnerData.activeChallenges){
+            money += c.getCoinsXKill()*plugin.getGameManager().playersInGame.get(lastPlayerLive.getUniqueId()).getKills();
+        }
+        if(money > 0){
+            PlayerData playerData = plugin.getCorePlugin().getData().getCached(lastPlayerLive.getUniqueId());
+            playerData.setLcoins(playerData.getLcoins()+money);
+            plugin.getCorePlugin().getData().save(lastPlayerLive);
+        }
+
         game.setState(GameState.FINISH);
         endGame(game);
 
-        final User winnerData = SkywarsDatabase.getDatabase().getCached(lastPlayerLive.getUniqueId());
-        winnerData.wins++;
-        winnerData.activeChallenges.clear();
-        topManager.calculateWins(winnerData, lastPlayerLive.getName());
+        assert lastPlayerLive != null;
 
         lastPlayerLive.sendTitle(Messages.get("win-title"), Messages.get("win-subtitle"));
-        Messages.sendNoGet(game.getPlayers(), Messages.get("win").replace("%winner%", lastPlayerLive.getName()));
+        if(winnerData.activeChallenges.isEmpty())
+            Messages.sendNoGet(game.getPlayers(), Messages.get("win").replace("%winner%", lastPlayerLive.getName()));
+        else{
+            StringBuilder challenges = new StringBuilder();
+
+            for(ChallengeConfig.ChallengeSelector c : winnerData.activeChallenges){
+                if(challenges.isEmpty()) challenges.append("&4").append(c.getName());
+                else challenges.append("&f, &4").append(c.getName());
+            }
+
+            Messages.sendNoGet(game.getPlayers(), Messages.get("win-challenges").replace("%winner%", lastPlayerLive.getName()).replace("%challenges%", challenges));
+
+        }
+        winnerData.activeChallenges.clear();
+
     }
 
     public void endGame(final SkywarsGame game) {
