@@ -26,7 +26,6 @@ public class ChallengeConfigLoader {
         final ConfigSection middleLifeSectienabled = challengeConfig.getSection("middle-life");
         final ConfigSection noobSectienabled = challengeConfig.getSection("noob");
 
-        logger.info("UCH " + uhcSectienabled.values().toString());
         // UCH
         cenabledfigToLoad.uhc.inventorySlot = uhcSectienabled.getInt("slot");
         cenabledfigToLoad.uhc.name = uhcSectienabled.getString("name");
