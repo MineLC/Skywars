@@ -1,7 +1,11 @@
 package lc.mine.skywars.game.listener;
 
+import lc.mine.skywars.database.SkywarsDatabase;
+import lc.mine.skywars.database.User;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,6 +52,7 @@ public final class InventoryListener implements Listener {
         if (game == null) {
             return;
         }
+
         final LongOpenHashSet chestsInCooldown = game.getChestsInCooldown();
         final Location location = event.getClickedBlock().getLocation();
         final long key = IntegerUtil.compress((int)location.getX(), (int)location.getY(), (int)location.getZ(), false);
@@ -55,6 +60,16 @@ public final class InventoryListener implements Listener {
         if (chestsInCooldown.contains(key)) {
             return;
         }
+
+        final User user = SkywarsDatabase.getDatabase().getCached(event.getPlayer().getUniqueId());
+
+        if(user.activeChallenges.contains(configManager.getChallengeConfig().getWithoutChests())){
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&c¡Estás cumpliendo un desafio sin abrir cofres!"));
+            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.WITHER_HURT, 1f, 1f);
+            return;
+        }
+
         ChestInventoryCreator.setItems(((Chest)event.getClickedBlock().getState()).getBlockInventory(), game.getChestMode());
         chestsInCooldown.add(key);
     }
@@ -65,7 +80,7 @@ public final class InventoryListener implements Listener {
         if (game == null) {
             event.setCancelled(true);
             final Material material = event.getMaterial();
-            if (interactUniversaltems(material, event.getPlayer())) {
+            if (interactUniversalItems(material, event.getPlayer())) {
                 return;
             }
             interactSpawnItems(material, event.getPlayer());
@@ -74,15 +89,14 @@ public final class InventoryListener implements Listener {
         if (game.getState() == GameState.PREGAME) {
             event.setCancelled(true);
             final Material material = event.getMaterial();
-            if (interactUniversaltems(event.getMaterial(), event.getPlayer())) {
+            if (interactUniversalItems(event.getMaterial(), event.getPlayer())) {
                 return;
             }
             interactPregameItems(material, event.getPlayer());
-            return;    
         }
     }
 
-    private boolean interactUniversaltems(final Material material, final Player player) {
+    private boolean interactUniversalItems(final Material material, final Player player) {
         final SpawnConfig spawn = configManager.getSpawnConfig();
         if (material == spawn.getCagesSelectorItem().cachedMaterial()) {
             player.openInventory(configManager.getCageInventory());
@@ -102,6 +116,9 @@ public final class InventoryListener implements Listener {
     private void interactPregameItems(final Material material, final Player player) {
         if (material == configManager.getSpawnConfig().getChestModeItem().cachedMaterial()) {
             player.openInventory(configManager.getChestRefillConfig().getInventory());
+        }
+        if(material == configManager.getSpawnConfig().getChallengeItem().cachedMaterial()){
+            configManager.getChallengeConfig().getChallengeInventoryBuilder().buildMainInventory(player);
         }
     }
 

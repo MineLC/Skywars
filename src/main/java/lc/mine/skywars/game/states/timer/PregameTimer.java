@@ -2,6 +2,8 @@ package lc.mine.skywars.game.states.timer;
 
 import java.util.Set;
 
+import lc.mine.skywars.config.ConfigManager;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -24,13 +26,15 @@ final class PregameTimer {
     private final GameStatesConfig.PreGame pregameConfig;
     private final KitConfig kitConfig;
     private final ChestRefillConfig chestRefillConfig;
+    private final ConfigManager configManager;
     private final TopManager topManager;
     
-    PregameTimer(TopManager topManager, GameStatesConfig.PreGame pregameConfig, KitConfig kitConfig, ChestRefillConfig chestRefillConfig) {
+    PregameTimer(TopManager topManager, GameStatesConfig.PreGame pregameConfig, KitConfig kitConfig, ChestRefillConfig chestRefillConfig, ConfigManager configManager) {
         this.topManager = topManager;
         this.pregameConfig = pregameConfig;
         this.kitConfig = kitConfig;
         this.chestRefillConfig = chestRefillConfig;
+        this.configManager = configManager;
     }
 
     public void tickGame(final SkywarsGame game) {
@@ -109,6 +113,13 @@ final class PregameTimer {
             return;
         }
         KitAdder.add(player, data.selectedKit);
+        final User user = SkywarsDatabase.getDatabase().getCached(player.getUniqueId());
+
+        if(user.activeChallenges.contains(configManager.getChallengeConfig().getMiddleLife())){
+            player.setMaxHealth(10.0);
+            player.setHealth(10.0);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lAVISO ! &fHas comenzado el desafio de media vida (5 corazones)"));
+        }
     }
 
     private ChestMode getModeWithMoreVotes(final ChestMode[] modes, final int[] votes) {

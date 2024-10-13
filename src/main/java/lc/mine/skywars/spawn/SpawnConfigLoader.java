@@ -24,6 +24,7 @@ public class SpawnConfigLoader {
         configToLoad.cagesSelectorItem = itemDeserializer.buildInventoryItem(spawnConfig.getSection("cages"), "cages");
         configToLoad.topsItem = itemDeserializer.buildInventoryItem(spawnConfig.getSection("top"), "top");
         configToLoad.mapSelectorItem = itemDeserializer.buildInventoryItem(spawnConfig.getSection("map-selector"), "map-selector");
+        configToLoad.challengeItem = itemDeserializer.buildInventoryItem(spawnConfig.getSection("challenge-selector"), "challenge-selector");
         configToLoad.kitSelectorItem = itemDeserializer.buildInventoryItem(spawnConfig.getSection("kits"), "kits");
 
         configToLoad.spawn = loadLocation(spawnConfig.getSection("spawn-location"));

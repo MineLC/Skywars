@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import lc.mine.skywars.game.challenge.ChallengeConfig;
 import org.bukkit.Material;
 
 import lc.mine.skywars.game.kit.Kit;
@@ -19,6 +20,7 @@ public class User {
     public int wins = 0;
 
     public Set<String> kits = new HashSet<>();
+    public Set<ChallengeConfig.ChallengeSelector> activeChallenges = new HashSet<>();
 
     public int chestRefillVoteIndex = -1;
     public Kit selectedKit;

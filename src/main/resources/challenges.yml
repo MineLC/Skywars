@@ -1,0 +1,212 @@
+uhc:
+  name: UHC
+  coinsXKill: 10
+  slot: 3
+  on:
+    type: "GOLDEN_APPLE"
+    name: "&eUHC"
+    lore:
+      - ""
+      - "&fNo podrás regenerar naturalmente"
+      - "&ftu salud a menos que uses pociones"
+      - "&fo comas comida que te de regeneración."
+      - ""
+      - "&eSi ganas obtienes &f10 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "GOLDEN_APPLE"
+    name: "&eUHC"
+    lore:
+      - ""
+      - "&fNo podrás regenerar naturalmente"
+      - "&ftu salud a menos que uses pociones"
+      - "&fo comas comida que te de regeneración."
+      - ""
+      - "&eSi ganas obtienes &f10 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &cDesactivado"
+      - ""
+      - "&eClic para activar desafio"
+noob:
+  name: Noob
+  coinsXKill: 15
+  slot: 32
+  on:
+    type: "STONE_SWORD"
+    name: "&cNoob"
+    lore:
+      - ""
+      - "&fNo podrás usar kits en la partida"
+      - "&fy solo iniciaras con una &7espada de piedra"
+      - ""
+      - "&eSi ganas obtienes &f15 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "STONE_SWORD"
+    name: "&cNoob"
+    lore:
+      - ""
+      - "&fNo podrás usar kits en la partida"
+      - "&fy solo iniciaras con una &7espada de piedra"
+      - ""
+      - "&eSi ganas obtienes &f15 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &cDesactivado"
+      - ""
+      - "&eClic para activar desafio"
+archer:
+  name: Arquero
+  coinsXKill: 10
+  slot: 5
+  on:
+    type: "BOW"
+    name: "&6Arquero"
+    lore:
+      - ""
+      - "&fNo podrás herramientas ni espadas para atacar"
+      - "&f¡Solo con tu arco y flechas!"
+      - ""
+      - "&eSi ganas obtienes &f10 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "BOW"
+    name: "&6Arquero"
+    lore:
+      - ""
+      - "&fNo podrás herramientas ni espadas para atacar"
+      - "&f¡Solo con tu arco y flechas!"
+      - ""
+      - "&eSi ganas obtienes &f10 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &cDesactivado"
+      - ""
+      - "&eClic para activar desafio"
+middle-life:
+  name: "Media Vida"
+  coinsXKill: 15
+  slot: 7
+  on:
+    type: "APPLE"
+    name: "&4Media Vida"
+    lore:
+      - ""
+      - "&fSolo tendrás un máximo de 5 corazones"
+      - "&fen la partida."
+      - ""
+      - "&eSi ganas obtienes &f15 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "APPLE"
+    name: "&4Media Vida"
+    lore:
+      - ""
+      - "&fSolo tendrás un máximo de 5 corazones"
+      - "&fen la partida."
+      - ""
+      - "&eSi ganas obtienes &f15 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &cDesactivado"
+      - ""
+      - "&eClic para activar desafio"
+without-chests:
+  name: "Sin cofres"
+  coinsXKill: 10
+  slot: 3
+  on:
+    type: "CHEST"
+    name: "&eSin cofres"
+    lore:
+      - ""
+      - "&fNo podrás abrir cofres de skywars"
+      - "&fdurante toda la partida."
+      - ""
+      - "&eSi ganas obtienes &f10 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "CHEST"
+    name: "&eSin cofres"
+    lore:
+      - ""
+      - "&fNo podrás abrir cofres de skywars"
+      - "&fdurante toda la partida."
+      - ""
+      - "&eSi ganas obtienes &f10 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &cDesactivado"
+      - ""
+      - "&eClic para activar desafio"
+without-blocks:
+  name: "Sin colocar bloques"
+  coinsXKill: 15
+  slot: 30
+  on:
+    type: "STONE"
+    name: "&eSin colocar bloques"
+    lore:
+      - ""
+      - "&fNo podrás colocar bloques durante toda"
+      - "&fla partida."
+      - ""
+      - "&eSi ganas obtienes &f15 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "STONE"
+    name: "&eSin colocar bloques"
+    lore:
+      - ""
+      - "&fNo podrás colocar bloques durante toda"
+      - "&fla partida."
+      - ""
+      - "&eSi ganas obtienes &f15 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &cDesactivado"
+      - ""
+      - "&eClic para activar desafio"
+definitive-warrior:
+  name: "Guerrero Definitivo"
+  coinsXKill: 17
+  slot: 28
+  on:
+    type: "IRON_HELMET"
+    name: "&aGuerrero Definitivo"
+    lore:
+      - ""
+      - "&fEmpezarás la partida con una espada de madera"
+      - "&fy a partir de ahi sera la unica herramienta que usarás"
+      - ""
+      - "&eSi ganas obtienes &f17 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para desactivar desafio"
+  off:
+    type: "IRON_HELMET"
+    name: "&aGuerrero Definitivo"
+    lore:
+      - ""
+      - "&fEmpezarás la partida con una espada de madera"
+      - "&fy a partir de ahi sera la unica herramienta que usarás"
+      - ""
+      - "&eSi ganas obtienes &f17 LCoins &epor cada &ckill"
+      - ""
+      - "&fEstado: &aActivado"
+      - ""
+      - "&eClic para activar desafio"

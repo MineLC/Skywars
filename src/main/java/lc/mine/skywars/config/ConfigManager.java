@@ -3,6 +3,8 @@ package lc.mine.skywars.config;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import lc.mine.skywars.game.challenge.ChallengeConfig;
+import lc.mine.skywars.game.challenge.ChallengeConfigLoader;
 import org.bukkit.inventory.Inventory;
 import org.yaml.snakeyaml.Yaml;
 
@@ -39,6 +41,7 @@ public class ConfigManager {
     private final GameStatesConfig gameStatesConfig = new GameStatesConfig();
     private final TopConfig topConfig = new TopConfig();
     private final SpawnConfig spawnConfig = new SpawnConfig();
+    private final ChallengeConfig challengeConfig = new ChallengeConfig();
     private final SidebarConfig sidebarConfig = new SidebarConfig();
 
     private Yaml yaml;
@@ -103,6 +106,7 @@ public class ConfigManager {
         loadKits(loadMainConfig());
         loadGamesStates();
         loadTopConfig();
+        loadChallengeConfig();
         loadSidebars();
         loadSpawn();
         cageInventory = new CageInventoryBuilder().buildInventories(spawnConfig);
@@ -135,6 +139,12 @@ public class ConfigManager {
         FileUtils.createIfAbsent("tops.yml");
         new TopsConfigLoader(logger).load(FileUtils.getConfig(yaml, "tops.yml"), plugin.getCorePlugin(), topConfig);
     }
+
+    private void loadChallengeConfig() {
+        FileUtils.createIfAbsent("challenges.yml");
+        new ChallengeConfigLoader(logger).load(FileUtils.getConfig(yaml, "challenges.yml"), challengeConfig);
+    }
+
     private void loadSpawn() {
         FileUtils.createIfAbsent("spawn.yml");
         new SpawnConfigLoader(logger).load(FileUtils.getConfig(yaml, "spawn.yml"), spawnConfig);
@@ -164,6 +174,9 @@ public class ConfigManager {
     }
     public TopConfig getTopConfig() {
         return topConfig;
+    }
+    public ChallengeConfig getChallengeConfig() {
+        return challengeConfig;
     }
     public SpawnConfig getSpawnConfig() {
         return spawnConfig;

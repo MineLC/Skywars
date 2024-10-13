@@ -16,6 +16,17 @@ vote-chest:
     - "&a&lBÁSICO&f, &e&lNORMAL &fy &c&lOP"
     - ""
 
+challenge-selector:
+  slot: 6
+  name: "&eDesafios de Skywars"
+  type: "FEATHER"
+  lore:
+    - ""
+    - "&fElige un desafio para"
+    - "&fganar LCoins extras al"
+    - "&fganar la partida."
+    - ""
+
 kits:
   slot: 0
   name: "&eKits"

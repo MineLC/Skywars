@@ -1,6 +1,10 @@
 package lc.mine.skywars.game.kit.gui;
 
+import lc.mine.skywars.config.ConfigManager;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import lc.mine.core.CorePlugin;
@@ -15,10 +19,12 @@ public final class KitInventory implements ClickableInventory {
 
     private final Kit[] kits;
     private final CorePlugin corePlugin;
+    private final ConfigManager configManager;
 
-    public KitInventory(Kit[] kits, CorePlugin corePlugin) {
+    public KitInventory(Kit[] kits, CorePlugin corePlugin, ConfigManager configManager) {
         this.kits = kits;
         this.corePlugin = corePlugin;
+        this.configManager = configManager;
     }
 
     @Override
@@ -32,6 +38,15 @@ public final class KitInventory implements ClickableInventory {
                 continue;
             }
             event.setCancelled(true);
+
+            final User user = SkywarsDatabase.getDatabase().getCached(entity.getUniqueId());
+
+            if(user.activeChallenges.contains(configManager.getChallengeConfig().getNoob())){
+                event.setCancelled(true);
+                entity.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c¡Estás cumpliendo donde solo empezarás con una espada de piedra!"));
+                ((Player) entity).playSound(entity.getLocation(), Sound.WITHER_HURT, 1f, 1f);
+                return;
+            }
 
             if (kit.permission() != null && !entity.hasPermission(kit.permission())) {
                 entity.sendMessage(kit.noPermissionMessage());   

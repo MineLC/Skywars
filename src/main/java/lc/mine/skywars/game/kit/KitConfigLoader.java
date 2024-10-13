@@ -40,7 +40,7 @@ public final class KitConfigLoader {
 
         final Kit[] kits = new Kit[kitsFiles.length];
         final Map<String, Kit> perName = new Object2ObjectOpenHashMap<>();
-        final Inventory inventory = Bukkit.createInventory(new KitInventory(kits, plugin.getCorePlugin()), 54, "Kits");
+        final Inventory inventory = Bukkit.createInventory(new KitInventory(kits, plugin.getCorePlugin(), plugin.getConfigManager()), 54, "Kits");
         int i = 0;
 
         for (final File kitFile : kitsFiles) {

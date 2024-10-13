@@ -20,7 +20,7 @@ public final class GameTimer implements Runnable {
         this.gameManager = gameManager;
         this.endGameTimer = new EndGameTimer(configManager.getGameStatesConfig().getEndgameConfig());
         this.inGameTimer = new InGameTimer(configManager.getGameStatesConfig().getInGameConfig(), gameManager, configManager.getSidebarConfig());
-        this.pregameTimer = new PregameTimer(topManager, configManager.getGameStatesConfig().getPregameConfig(), configManager.getKitsConfig(), configManager.getChestRefillConfig());
+        this.pregameTimer = new PregameTimer(topManager, configManager.getGameStatesConfig().getPregameConfig(), configManager.getKitsConfig(), configManager.getChestRefillConfig(), configManager);
     }
 
     public void start(final JavaPlugin plugin) {

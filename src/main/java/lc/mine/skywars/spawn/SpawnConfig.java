@@ -11,7 +11,7 @@ import lc.mine.skywars.sidebar.SpawnSidebar;
 public class SpawnConfig {
 
     Location spawn;
-    InventoryItem kitSelectorItem, chestModeItem, cagesSelectorItem, topsItem, mapSelectorItem;
+    InventoryItem kitSelectorItem, chestModeItem, cagesSelectorItem, topsItem, mapSelectorItem, challengeItem;
 
     public Location getSpawn() {
         return spawn;
@@ -31,6 +31,9 @@ public class SpawnConfig {
     public InventoryItem getTopsItem() {
         return topsItem;
     }
+    public InventoryItem getChallengeItem() {
+        return challengeItem;
+    }
 
     public void sendPregameItems(final Player player) {
         final PlayerInventory inventory = player.getInventory(); 
@@ -39,6 +42,7 @@ public class SpawnConfig {
         inventory.setItem(kitSelectorItem.slot(), kitSelectorItem.item());
         inventory.setItem(topsItem.slot(), topsItem.item());
         inventory.setItem(cagesSelectorItem.slot(), cagesSelectorItem.item());
+        inventory.setItem(challengeItem.slot(), challengeItem.item());
         inventory.setItem(chestModeItem.slot(), chestModeItem.item());
     }
 
