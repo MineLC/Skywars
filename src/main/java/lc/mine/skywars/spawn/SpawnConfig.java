@@ -51,7 +51,8 @@ public class SpawnConfig {
             player.setAllowFlight(true);
         }
         player.setFoodLevel(20);
-        player.setHealth(20);
+        player.setMaxHealth(20.0);
+        player.setHealth(player.getMaxHealth());
         player.setGameMode(GameMode.SURVIVAL);
         player.teleport(spawn);
         giveSpawnItems(player);
