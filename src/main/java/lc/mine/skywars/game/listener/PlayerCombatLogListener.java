@@ -58,7 +58,7 @@ public final class PlayerCombatLogListener implements Listener {
 
     @EventHandler
     public void onDamageByEntity(final EntityDamageByEntityEvent e){
-        if(e.getEntity() instanceof Player vic) {
+        if(e.getEntity() instanceof Player) {
             if (e.getDamager() instanceof Player dam) {
                 final User user = SkywarsDatabase.getDatabase().getCached(dam.getUniqueId());
 

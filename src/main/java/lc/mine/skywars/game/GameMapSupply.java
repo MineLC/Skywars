@@ -1,22 +1,24 @@
 package lc.mine.skywars.game;
 
+import java.lang.ref.WeakReference;
+
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import lc.mine.core.config.messages.Messages;
+import lc.mine.skywars.SkywarsPlugin;
 import lc.mine.skywars.game.states.GameState;
 import lc.mine.skywars.map.MapLoadSupply;
 import lc.mine.skywars.map.SkywarsMap;
 
 public class GameMapSupply implements MapLoadSupply {
 
-    private final Player playerToTeleport;
+    private final WeakReference<Player> playerToTeleport;
     private final GameManager gameManager;
     private final SkywarsGame game;
-    private final JavaPlugin plugin;
+    private final SkywarsPlugin plugin;
 
-    public GameMapSupply(Player player, GameManager gameManager, SkywarsGame game, JavaPlugin plugin) {
+    public GameMapSupply(WeakReference<Player> player, GameManager gameManager, SkywarsGame game, SkywarsPlugin plugin) {
         this.playerToTeleport = player;
         this.gameManager = gameManager;
         this.game = game;
@@ -25,16 +27,25 @@ public class GameMapSupply implements MapLoadSupply {
 
     @Override
     public void onLoad(World world, SkywarsMap map) {
-        game.setState(GameState.PREGAME);
-        game.setWorld(world);
         plugin.getServer().getScheduler().runTask(plugin, () -> {
-            gameManager.removePlayerTryingToJoinInGame(playerToTeleport.getUniqueId());
-            gameManager.join(playerToTeleport, game);
+            final Player player = playerToTeleport.get();
+            if (player == null || !player.isOnline()) {
+                plugin.getMapManager().unloadMap(map, world);
+                return;
+            }
+            game.setState(GameState.PREGAME);
+            game.setWorld(world);
+
+            gameManager.removePlayerTryingToJoinInGame(player.getUniqueId());
+            gameManager.join(player, game);
         });
     }
 
     @Override
     public void onMapLoadError() {
-        Messages.send(playerToTeleport, "map.cant-load");
+        final Player player = playerToTeleport.get();
+        if (player != null) {
+            Messages.send(player, "map.cant-load");
+        }
     }
 }

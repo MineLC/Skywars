@@ -1,5 +1,6 @@
 package lc.mine.skywars.game;
 
+import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -47,7 +48,7 @@ public final class GameManager {
         this.topManager = topManager;
     }
 
-    public boolean canJoin(final Player player) {
+    public boolean cantJoin(final Player player) {
         return playersTryingToJoinInGame.contains(player.getUniqueId());
     }
 
@@ -57,7 +58,7 @@ public final class GameManager {
             return;
         }
         if (game.getState() == GameState.UNSTARTED) {
-            plugin.getMapManager().loadMap(game.getMap(), new GameMapSupply(player, this, game, plugin));
+            plugin.getMapManager().loadMap(game.getMap(), new GameMapSupply(new WeakReference<Player>(player), this, game, plugin));
             playersTryingToJoinInGame.add(uuid);
             return;
         }
